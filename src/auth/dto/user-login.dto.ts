@@ -3,7 +3,17 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class LoginAdvertisererDto {
+  @IsString()
+  @IsNotEmpty()
+  username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
+
+export class CreateAdvertisererDto {
   @IsString()
   @IsNotEmpty()
   username: string;
@@ -14,5 +24,5 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  room: string;
+  page: string;
 }

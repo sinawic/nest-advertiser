@@ -21,8 +21,8 @@ export class JwtStrategy extends PassportStrategy(
     });
   }
 
-  async validate({ _id, room }) {
-    const user = await this.authService.getRequesterAdvertiser({ _id, room })
+  async validate({ _id }) {
+    const user = await this.authService.getRequesterAdvertiser({ _id })
     return user;
   }
 }
