@@ -28,12 +28,4 @@ export class EditCategoryDto {
   _id: IdDto;
 }
 
-export class ToggleCategoryDto {
-  @IsBoolean()
-  @IsNotEmpty()
-  active: boolean;
-
-  @Type(() => IdDto)
-  _id: IdDto;
-}
 

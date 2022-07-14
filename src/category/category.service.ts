@@ -3,7 +3,8 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Category } from './schemas';
 import { IdDto, PaginationDto } from '../common/dto';
-import { CreateCategoryDto, EditCategoryDto, ToggleCategoryDto } from './dto/';
+import { CreateCategoryDto, EditCategoryDto } from './dto/';
+import { ToggleDto } from '../common/dto/toggle.dto';
 
 @Injectable()
 export class CategoryService {
@@ -51,10 +52,10 @@ export class CategoryService {
     }
   }
 
-  toggleCategory = async (toggleCategoryDto: ToggleCategoryDto) => {
+  toggleCategory = async (toggleDto: ToggleDto) => {
     try {
-      return await this.categoryModel.findOneAndUpdate({ _id: toggleCategoryDto._id },
-        { active: Boolean(toggleCategoryDto.active) })
+      return await this.categoryModel.findOneAndUpdate({ _id: toggleDto._id },
+        { active: Boolean(toggleDto.active) })
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
     }
