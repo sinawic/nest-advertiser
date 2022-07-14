@@ -5,7 +5,7 @@ export type ProductDocument = Product & Document;
 
 @Schema()
 export class Product {
-  @Prop({ required: true, index: true, unique: true })
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
@@ -25,3 +25,5 @@ export class Product {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product)
+
+ProductSchema.index({ name: 1, advertiser: 1, category: 1 }, { unique: true });

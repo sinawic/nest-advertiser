@@ -37,7 +37,7 @@ export class AdvertiserService {
   activateAdvertiser = async (toggleDto: ToggleDto) => {
     try {
       return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        active: toggleDto.active
+        active: Boolean(toggleDto.active)
       })
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
@@ -47,7 +47,7 @@ export class AdvertiserService {
   verifyAdvertiser = async (toggleDto: ToggleDto) => {
     try {
       return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        verified: toggleDto.active
+        verified: Boolean(toggleDto.active)
       })
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)

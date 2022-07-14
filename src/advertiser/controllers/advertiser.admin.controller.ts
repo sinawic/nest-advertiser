@@ -42,6 +42,6 @@ export class AdvertiserAdminController {
   verify(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.advertiserService.verifyAdvertiser({ active: body.active, _id })
+    return this.advertiserService.verifyAdvertiser({ active: body.verified, _id })
   }
 }
