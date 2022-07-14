@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Product } from './schemas';
-import { IdDto, PaginationDto } from '../common/dto';
-import { CreateProductDto, EditProductDto, ToggleProductDto } from './dto/';
-import { Category } from '../category/schemas';
+import { Product } from '../schemas';
+import { IdDto, PaginationDto } from '../../common/dto';
+import { CreateProductDto, EditProductDto, ToggleProductDto } from '../dto';
+import { Category } from '../../category/schemas';
 
 @Injectable()
-export class ProductService {
+export class AdvertiserProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<any>,
     @InjectModel(Category.name) private categoryModel: Model<any>

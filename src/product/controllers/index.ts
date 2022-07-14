@@ -1,2 +1,2 @@
-export * from './product.controller'
+export * from './product.user.controller'
 export * from './product.advertiser.controller'

@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ProductController, ProductAdvertiserController } from './controllers';
-import { ProductService } from './product.service';
+import { UserProductController, ProductAdvertiserController } from './controllers';
+import { AdvertiserProductService, UserProductService } from './service';
 
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { Product, ProductSchema } from './schemas';
-import { JwtStrategy } from '../auth/Strategy';
+import { AdvertiserJwtStrategy, UserJwtStrategy } from '../auth/Strategy';
 import { Advertiser, AdvertiserSchema } from '../advertiser/schemas';
+import { User, UserSchema } from '../user/schemas';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from '../auth/service';
+import { AdvertiserAuthService, UserAuthService } from '../auth/service';
 import { Category, CategorySchema } from '../category/schemas';
 
 @Module({
@@ -17,8 +18,9 @@ import { Category, CategorySchema } from '../category/schemas';
     MongooseModule.forFeature([
       { name: Product.name, schema: ProductSchema },
       { name: Category.name, schema: CategorySchema },
+      { name: User.name, schema: UserSchema },
       { name: Advertiser.name, schema: AdvertiserSchema }])],
-  controllers: [ProductController, ProductAdvertiserController],
-  providers: [ProductService, JwtStrategy, AuthService]
+  controllers: [UserProductController, ProductAdvertiserController],
+  providers: [AdvertiserProductService, UserProductService, AdvertiserJwtStrategy, UserJwtStrategy, UserAuthService, AdvertiserAuthService]
 })
 export class ProductModule { }
