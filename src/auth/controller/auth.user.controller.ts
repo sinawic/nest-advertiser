@@ -6,7 +6,7 @@ import {
 import { CreateAdvertisererDto, LoginAdvertisererDto } from '../dto';
 import { AuthService } from '../service';
 
-@Controller('advertiser/')
+@Controller('user/')
 export class AuthController {
   constructor(private authService: AuthService) { }
 

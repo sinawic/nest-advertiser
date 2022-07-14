@@ -8,7 +8,7 @@ import { Product, ProductSchema } from './schemas';
 import { JwtStrategy } from '../auth/Strategy';
 import { Advertiser, AdvertiserSchema } from '../advertiser/schemas';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../auth/service';
 import { Category, CategorySchema } from '../category/schemas';
 
 @Module({

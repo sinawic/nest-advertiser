@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Advertiser, AdvertiserSchema } from '../advertiser/schemas';
 import { AuthController } from './controller/auth.advertiser.controller';
-import { AuthService } from './auth.service';
+import { AuthService } from './service';
 
 @Module({
   imports: [JwtModule.registerAsync({

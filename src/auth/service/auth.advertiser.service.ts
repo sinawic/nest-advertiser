@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Advertiser } from '../advertiser/schemas';
+import { Advertiser } from '../../advertiser/schemas';
 
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { sha1 } from '../common/utils';
-import { CreateAdvertisererDto, LoginAdvertisererDto } from './dto';
+import { sha1 } from '../../common/utils';
+import { CreateAdvertisererDto, LoginAdvertisererDto } from '../dto';
 
 @Injectable()
 export class AuthService {
