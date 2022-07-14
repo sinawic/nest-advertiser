@@ -3,21 +3,21 @@ import {
   Controller,
   Post,
 } from '@nestjs/common';
-import { CreateAdvertisererDto, LoginAdvertisererDto } from '../dto';
-import { AuthService } from '../service';
+import { CreateUserDto, LoginUserDto } from '../dto';
+import { AdvertiserAuthService } from '../service';
 
 @Controller('advertiser/')
-export class AuthController {
-  constructor(private authService: AuthService) { }
+export class AdvertiserAuthController {
+  constructor(private authService: AdvertiserAuthService) { }
 
   @Post('login')
-  login(@Body() loginAdvertisererDto: LoginAdvertisererDto) {
-    return this.authService.validateAdvertiserLogin(loginAdvertisererDto)
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.authService.validateAdvertiserLogin(loginUserDto)
   }
 
   @Post('register')
-  register(@Body() createAdvertisererDto: CreateAdvertisererDto) {
-    return this.authService.registerAdvertiser(createAdvertisererDto)
+  register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.registerAdvertiser(createUserDto)
   }
 
 }
