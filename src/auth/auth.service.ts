@@ -53,7 +53,7 @@ export class AuthService {
   getRequesterAdvertiser = async ({ _id }) => {
     return await this.advertiserModel.findOne({
       _id
-    })
+    }).select('-password')
   }
 
 }

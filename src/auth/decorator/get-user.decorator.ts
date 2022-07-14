@@ -3,7 +3,7 @@ import {
   ExecutionContext,
 } from '@nestjs/common';
 
-export const GetUser = createParamDecorator(
+export const GetAdvertiser = createParamDecorator(
   (
     data: string | undefined,
     ctx: ExecutionContext,
