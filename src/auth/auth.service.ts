@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Advertiser } from '../advertiser/schemas';
 
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { sha1 } from '../common/utils';
 import { CreateAdvertisererDto, LoginAdvertisererDto } from './dto';
@@ -14,18 +14,13 @@ export class AuthService {
     @InjectModel(Advertiser.name) private advertiserModel: Model<any>
   ) { }
 
-
-  getAdvertiserByCred = async ({ username, password }: { username: string, password: string }) => {
-    return await this.advertiserModel.findOne({
-      username, password: sha1(password)
-    })
-  }
-
   validateAdvertiserLogin = async (loginAdvertisererDto: LoginAdvertisererDto) => {
     try {
-      const advertiser = await this.getAdvertiserByCred(loginAdvertisererDto)
+      const advertiser = await this.advertiserModel.findOne({
+        ...loginAdvertisererDto, password: sha1(loginAdvertisererDto.password), active: true
+      })
       if (!advertiser)
-        throw new HttpException('Invalid username or password', HttpStatus.BAD_REQUEST)
+        throw new HttpException('Invalid username or password or not active', HttpStatus.BAD_REQUEST)
 
       return this.signToken(advertiser);
     } catch (error: any) {
