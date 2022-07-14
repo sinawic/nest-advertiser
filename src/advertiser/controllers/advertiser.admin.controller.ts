@@ -2,18 +2,15 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
-  Delete,
   Get,
   Param,
   ParseIntPipe,
-  Post,
-  Put,
+  Patch,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { BasicGuard } from '../../auth/Guard';
 import { AdvertiserService } from '../advertiser.service';
-import { CreateAdvertiserDto } from '../dto';
 import { IdDto } from '../../common/dto';
 
 
@@ -34,12 +31,17 @@ export class AdvertiserAdminController {
     return this.advertiserService.getAdvertiserDetails(_id)
   }
 
-  @Put(':_id')
-  put(
+  @Patch(':_id')
+  activate(
     @Param('_id') _id: IdDto,
-    @Body() active: boolean) {
-    return this.advertiserService.activateAdvertiser({ active, _id })
+    @Body() body) {
+    return this.advertiserService.activateAdvertiser({ active: body.active, _id })
   }
 
-
+  @Patch('verify/:_id')
+  verify(
+    @Param('_id') _id: IdDto,
+    @Body() body) {
+    return this.advertiserService.verifyAdvertiser({ active: body.active, _id })
+  }
 }

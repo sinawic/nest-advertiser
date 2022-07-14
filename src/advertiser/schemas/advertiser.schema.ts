@@ -14,6 +14,9 @@ export class Advertiser {
   @Prop({ default: true })
   active: boolean;
 
+  @Prop({ default: false })
+  verified: boolean;
+
   @Prop({ required: true })
   page: string;
 

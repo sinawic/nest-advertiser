@@ -2,9 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { sha1 } from '../common/utils';
-import { ActivateAdvertiserDto, CreateAdvertiserDto, EditAdvertiserDto } from './dto';
+import { CreateAdvertiserDto, EditAdvertiserDto } from './dto';
 import { Advertiser } from './schemas';
 import { IdDto, PaginationDto } from '../common/dto';
+import { ToggleDto } from 'src/common/dto/toggle.dto';
 const crypto = require('crypto')
 
 @Injectable()
@@ -33,10 +34,20 @@ export class AdvertiserService {
     }
   }
 
-  activateAdvertiser = async (activateAdvertiserDto: ActivateAdvertiserDto) => {
+  activateAdvertiser = async (toggleDto: ToggleDto) => {
     try {
-      return await this.advertiserModel.findOneAndUpdate({ _id: activateAdvertiserDto._id }, {
-        active: activateAdvertiserDto.active
+      return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
+        active: toggleDto.active
+      })
+    } catch (error) {
+      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  verifyAdvertiser = async (toggleDto: ToggleDto) => {
+    try {
+      return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
+        verified: toggleDto.active
       })
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)

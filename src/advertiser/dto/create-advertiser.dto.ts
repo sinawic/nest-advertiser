@@ -36,12 +36,3 @@ export class EditAdvertiserDto {
   @Type(() => IdDto)
   _id: IdDto;
 }
-
-export class ActivateAdvertiserDto {
-  @IsBoolean()
-  @IsNotEmpty()
-  active: boolean;
-
-  @Type(() => IdDto)
-  _id: IdDto;
-}
