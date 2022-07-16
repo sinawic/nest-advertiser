@@ -20,7 +20,7 @@ import { GetUser } from 'src/auth/decorator';
 
 @UseGuards(AdvertiserJwtGuard)
 @Controller('advertiser/product')
-export class ProductAdvertiserController {
+export class AdvertiserProductController {
   constructor(private advertiserProductService: AdvertiserProductService) { }
 
   @Get()

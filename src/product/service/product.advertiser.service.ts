@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from '../schemas';
-import { IdDto, PaginationDto } from '../../common/dto';
-import { CreateProductDto, EditProductDto, ToggleProductDto } from '../dto';
+import { IdDto, PaginationDto, ToggleDto } from '../../common/dto';
+import { CreateProductDto, EditProductDto } from '../dto';
 import { Category } from '../../category/schemas';
 
 @Injectable()
@@ -58,10 +58,10 @@ export class AdvertiserProductService {
     }
   }
 
-  toggleProduct = async (toggleProductDto: ToggleProductDto) => {
+  toggleProduct = async (toggleDto: ToggleDto) => {
     try {
-      return await this.productModel.findOneAndUpdate({ _id: toggleProductDto._id },
-        { active: Boolean(toggleProductDto.active) })
+      return await this.productModel.findOneAndUpdate({ _id: toggleDto._id },
+        { active: Boolean(toggleDto.active) })
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
     }

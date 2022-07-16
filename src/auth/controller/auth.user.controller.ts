@@ -12,7 +12,6 @@ export class UserAuthController {
 
   @Post('login')
   login(@Body() loginUserDto: LoginUserDto) {
-    console.log('loginUserDto', loginUserDto)
     return this.authService.validateUserLogin(loginUserDto)
   }
 

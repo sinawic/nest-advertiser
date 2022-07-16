@@ -9,7 +9,7 @@ import {
 import { Type } from 'class-transformer';
 import { IdDto } from '../../common/dto';
 
-export class CreateProductDto {
+export class CreateRequestDto {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -24,7 +24,7 @@ export class CreateProductDto {
   category: IdDto;
 }
 
-export class EditProductDto {
+export class EditRequestDto {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -32,5 +32,4 @@ export class EditProductDto {
   @Type(() => IdDto)
   _id: IdDto;
 }
-
 
