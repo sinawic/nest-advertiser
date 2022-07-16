@@ -11,10 +11,10 @@ import {
 import { UserRequestService } from '../service';
 import { IdDto } from '../../common/dto';
 import { UserJwtGuard } from '../../auth/Guard';
-import { QueryRequired } from '../../common/decorator';
+import { GetUser } from '../../auth/decorator';
 
 @UseGuards(UserJwtGuard)
-@Controller('user/product')
+@Controller('user/request')
 export class UserRequestController {
   constructor(private userRequestService: UserRequestService) { }
 
@@ -22,17 +22,17 @@ export class UserRequestController {
   getList(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('paging', new DefaultValuePipe(16), ParseIntPipe) paging: number,
-    @QueryRequired('category') category: IdDto) {
-    return this.userRequestService.getRequests({ page, paging }, category)
+    @GetUser() user) {
+    return this.userRequestService.getRequests({ page, paging }, user)
   }
 
   @Get(':_id')
-  getById(@Param('_id') _id: IdDto) {
-    return this.userRequestService.getRequestDetails(_id)
+  getById(@Param('_id') _id: IdDto, @GetUser() user) {
+    return this.userRequestService.getRequestDetails(_id, user)
   }
 
-  @Post()
-  create() {
-    return {}
+  @Post(':_id')
+  create(@Param('_id') _id: IdDto, @GetUser() user) {
+    return this.userRequestService.createRequest(_id, user)
   }
 }
