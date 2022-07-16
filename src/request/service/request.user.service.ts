@@ -1,15 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Request } from '../schemas';
+import { Attachment, Request } from '../schemas';
 import { IdDto, PaginationDto } from '../../common/dto';
 import { Product } from '../../product/schemas';
+import { CreateAttachmentDto, SaveFileDto } from '../dto';
 
 @Injectable()
 export class UserRequestService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<any>,
     @InjectModel(Request.name) private requestModel: Model<any>,
+    @InjectModel(Attachment.name) private attachmentModel: Model<any>
   ) { }
 
   getRequests = async (paginationDto: PaginationDto, user) => {
@@ -27,13 +29,25 @@ export class UserRequestService {
 
   getRequestDetails = async (_id: IdDto, user) => {
     try {
-      return await this.requestModel.findOne({ _id, user: user._id })
+      return await this.requestModel.aggregate([
+        //@ts-ignore
+        { $match: { _id: new mongoose.Types.ObjectId(_id), user: user._id } },
+        { $sort: { 'date_created': 1 } },
+        { $limit: 1 },
+        {
+          $lookup: {
+            from: 'attachments',
+            localField: '_id',
+            foreignField: 'request',
+            as: 'attachments'
+          }
+        }])
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
-  createRequest = async (_id: IdDto, user) => {
+  createRequest = async (_id: IdDto, user: { _id: IdDto; }) => {
     try {
       const product = await this.productModel.findOne({ _id, active: true })
       if (!product)
@@ -45,6 +59,14 @@ export class UserRequestService {
         advertiser: product.advertiser,
         date_created: new Date()
       }).save()
+    } catch (error) {
+      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  createAttachment = async (saveFileDto: SaveFileDto) => {
+    try {
+      return await new this.attachmentModel(saveFileDto).save()
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
     }

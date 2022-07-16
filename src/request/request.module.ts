@@ -4,7 +4,7 @@ import { UserRequestService } from './service';
 
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { Request, RequestSchema } from './schemas';
+import { Attachment, AttachmentSchema, Request, RequestSchema } from './schemas';
 import { AdvertiserJwtStrategy, UserJwtStrategy } from '../auth/Strategy';
 import { Advertiser, AdvertiserSchema } from '../advertiser/schemas';
 import { User, UserSchema } from '../user/schemas';
@@ -18,6 +18,7 @@ import { AdvertiserAuthService, UserAuthService } from '../auth/service';
     MongooseModule.forFeature([
       { name: Request.name, schema: RequestSchema },
       { name: Product.name, schema: ProductSchema },
+      { name: Attachment.name, schema: AttachmentSchema },
       { name: User.name, schema: UserSchema },
       { name: Advertiser.name, schema: AdvertiserSchema }])],
   controllers: [UserRequestController],
