@@ -8,17 +8,16 @@ import { Category } from '../../category/schemas';
 @Injectable()
 export class UserProductService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<any>,
-    @InjectModel(Category.name) private categoryModel: Model<any>
+    @InjectModel(Product.name) private productModel: Model<any>
   ) { }
 
-  getProducts = async (paginationDto: PaginationDto) => {
+  getProducts = async (paginationDto: PaginationDto, category) => {
     try {
-      const products = await this.productModel.find({ active: true })
+      const products = await this.productModel.find({ active: true, category })
         .sort({ 'date_created': -1 })
         .skip((paginationDto.page - 1) * paginationDto.paging)
         .limit((paginationDto.page - 1) * paginationDto.paging + paginationDto.paging)
-      const count = await this.productModel.countDocuments({ active: true })
+      const count = await this.productModel.countDocuments({ active: true, category })
       return { data: products, count }
     } catch (error) {
       throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)

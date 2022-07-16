@@ -10,6 +10,7 @@ import {
 import { UserProductService } from '../service';
 import { IdDto } from '../../common/dto';
 import { UserJwtGuard } from '../../auth/Guard';
+import { QueryRequired } from '../../common/decorator';
 
 @UseGuards(UserJwtGuard)
 @Controller('user/product')
@@ -19,8 +20,9 @@ export class UserProductController {
   @Get()
   getList(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('paging', new DefaultValuePipe(16), ParseIntPipe) paging: number) {
-    return this.userProductService.getProducts({ page, paging })
+    @Query('paging', new DefaultValuePipe(16), ParseIntPipe) paging: number,
+    @QueryRequired('category') category: IdDto) {
+    return this.userProductService.getProducts({ page, paging }, category)
   }
 
   @Get(':_id')
