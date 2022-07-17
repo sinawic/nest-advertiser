@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UserRequestController, AdvertiserRequestController } from './controllers';
-import { UserRequestService, AdvertiserRequestService } from './service';
+import { UserRequestController, AdvertiserRequestController, AdminRequestController } from './controllers';
+import { UserRequestService, AdvertiserRequestService, AdminRequestService } from './service';
 
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -21,7 +21,7 @@ import { AdvertiserAuthService, UserAuthService } from '../auth/service';
       { name: Attachment.name, schema: AttachmentSchema },
       { name: User.name, schema: UserSchema },
       { name: Advertiser.name, schema: AdvertiserSchema }])],
-  controllers: [UserRequestController, AdvertiserRequestController],
-  providers: [UserRequestService, AdvertiserRequestService, AdvertiserJwtStrategy, UserJwtStrategy, UserAuthService, AdvertiserAuthService]
+  controllers: [UserRequestController, AdvertiserRequestController, AdminRequestController],
+  providers: [UserRequestService, AdvertiserRequestService, AdminRequestService, AdvertiserJwtStrategy, UserJwtStrategy, UserAuthService, AdvertiserAuthService]
 })
 export class RequestModule { }
