@@ -5,11 +5,13 @@ import { Product } from '../schemas';
 import { IdDto, PaginationDto, ToggleDto } from '../../common/dto';
 import { CreateProductDto, EditProductDto } from '../dto';
 import { Category } from '../../category/schemas';
+import { Request } from '../../request/schemas';
 
 @Injectable()
 export class AdvertiserProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<any>,
+    @InjectModel(Request.name) private requestModel: Model<any>,
     @InjectModel(Category.name) private categoryModel: Model<any>
   ) { }
 
@@ -68,8 +70,8 @@ export class AdvertiserProductService {
   }
 
   deleteProduct = async (_id: IdDto) => {
-    if (await this.productModel.findOne({ parent: _id }))
-      throw new HttpException({ message: 'Cant remove parent product' }, HttpStatus.BAD_REQUEST)
+    if (await this.requestModel.findOne({ product: _id }))
+      throw new HttpException({ message: 'Product has requests' }, HttpStatus.BAD_REQUEST)
     try {
       return await this.productModel.findOneAndDelete({ _id })
     } catch (error) {
