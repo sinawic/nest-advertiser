@@ -1,0 +1,1 @@
+export * from './campaignPrices.admin.controller'
