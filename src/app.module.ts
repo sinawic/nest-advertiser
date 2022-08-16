@@ -7,7 +7,8 @@ import { ProductModule } from './product/product.module';
 import { RequestModule } from './request/request.module';
 import { AuthModule } from './auth/auth.module';
 import { LevelModule } from './level/level.module';
-import { CampaignPriceModule } from './campaignPrices/campaignPrice.module';
+import { CampaignPriceModule } from './campaignPrice/campaignPrice.module';
+import { CampaignPercentModule } from './campaignPercent/campaignPercent.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -23,6 +24,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     UsersModule,
     LevelModule,
     CampaignPriceModule,
+    CampaignPercentModule,
     AuthModule
   ],
   providers: []
