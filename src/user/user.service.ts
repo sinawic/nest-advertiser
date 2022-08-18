@@ -22,7 +22,7 @@ export class UserService {
       const count = await this.userModel.countDocuments({})
       return { data: users, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -30,27 +30,27 @@ export class UserService {
     try {
       return await this.userModel.findOne({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   activateUser = async (toggleDto: ToggleDto) => {
     try {
       return await this.userModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        active: Boolean(toggleDto.active)
+        active: Boolean(toggleDto.state)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   verifyUser = async (toggleDto: ToggleDto) => {
     try {
       return await this.userModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        verified: Boolean(toggleDto.active)
+        verified: Boolean(toggleDto.state)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -64,7 +64,7 @@ export class UserService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -75,7 +75,7 @@ export class UserService {
         password: sha1(editUserDto.password)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -83,7 +83,7 @@ export class UserService {
     try {
       return await this.userModel.findOneAndDelete({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

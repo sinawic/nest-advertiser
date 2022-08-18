@@ -19,7 +19,7 @@ export class CampaignPriceService {
       const count = await this.campaignPriceModel.countDocuments({})
       return { data: campaignPrices, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -27,7 +27,7 @@ export class CampaignPriceService {
     try {
       return await this.campaignPriceModel.findOne({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -38,7 +38,7 @@ export class CampaignPriceService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -46,7 +46,7 @@ export class CampaignPriceService {
     try {
       return await this.campaignPriceModel.findOneAndUpdate({ _id: editCampaignPriceDto._id }, editCampaignPriceDto)
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -57,7 +57,7 @@ export class CampaignPriceService {
     try {
       return await this.campaignPriceModel.findOneAndDelete({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

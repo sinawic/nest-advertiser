@@ -35,13 +35,13 @@ export class UserController {
   activate(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.userService.activateUser({ active: body.active, _id })
+    return this.userService.activateUser({ state: body.active, _id })
   }
 
   @Patch('verify/:_id')
   verify(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.userService.verifyUser({ active: body.verified, _id })
+    return this.userService.verifyUser({ state: body.verified, _id })
   }
 }

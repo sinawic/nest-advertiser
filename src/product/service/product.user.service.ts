@@ -20,7 +20,7 @@ export class UserProductService {
       const count = await this.productModel.countDocuments({ active: true, category })
       return { data: products, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -28,7 +28,7 @@ export class UserProductService {
     try {
       return await this.productModel.findOne({ _id, active: true })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 }

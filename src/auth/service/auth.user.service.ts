@@ -24,7 +24,7 @@ export class UserAuthService {
 
       return this.signToken(user);
     } catch (error: any) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -36,7 +36,7 @@ export class UserAuthService {
         password: sha1(createUserDto.password)
       }).save()
     } catch (error: any) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

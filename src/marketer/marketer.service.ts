@@ -22,7 +22,7 @@ export class MarketerService {
       const count = await this.marketerModel.countDocuments({})
       return { data: marketers, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -30,27 +30,27 @@ export class MarketerService {
     try {
       return await this.marketerModel.findOne({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   activateMarketer = async (toggleDto: ToggleDto) => {
     try {
       return await this.marketerModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        active: Boolean(toggleDto.active)
+        active: Boolean(toggleDto.state)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   verifyMarketer = async (toggleDto: ToggleDto) => {
     try {
       return await this.marketerModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        verified: Boolean(toggleDto.active)
+        verified: Boolean(toggleDto.state)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -64,7 +64,7 @@ export class MarketerService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -75,7 +75,7 @@ export class MarketerService {
         password: sha1(editMarketerDto.password)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -83,7 +83,7 @@ export class MarketerService {
     try {
       return await this.marketerModel.findOneAndDelete({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

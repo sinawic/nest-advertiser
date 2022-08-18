@@ -50,7 +50,7 @@ export class CategoryAdminController {
   toggle(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.categoryService.toggleCategory({ active: body.active, _id })
+    return this.categoryService.toggleCategory({ state: body.active, _id })
   }
 
   @Delete(':_id')

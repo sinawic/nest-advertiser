@@ -21,7 +21,7 @@ export class AdminRequestService {
       const count = await this.requestModel.countDocuments({})
       return { data: products, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -41,16 +41,16 @@ export class AdminRequestService {
           }
         }])
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   toggleRequest = async (toggleDto: ToggleDto) => {
     try {
       return await this.requestModel.findOneAndUpdate({ _id: toggleDto._id },
-        { admin_verified: Boolean(toggleDto.active) })
+        { admin_verified: Boolean(toggleDto.state) })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 }

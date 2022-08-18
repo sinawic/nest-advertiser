@@ -23,7 +23,7 @@ export class UserRequestService {
       const count = await this.requestModel.countDocuments({ user: user._id })
       return { data: products, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -43,7 +43,7 @@ export class UserRequestService {
           }
         }])
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -60,7 +60,7 @@ export class UserRequestService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -68,7 +68,7 @@ export class UserRequestService {
     try {
       return await new this.attachmentModel(saveFileDto).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 }

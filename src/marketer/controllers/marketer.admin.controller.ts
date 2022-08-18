@@ -35,13 +35,13 @@ export class MarketerAdminController {
   activate(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.marketerService.activateMarketer({ active: body.active, _id })
+    return this.marketerService.activateMarketer({ state: body.active, _id })
   }
 
   @Patch('verify/:_id')
   verify(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.marketerService.verifyMarketer({ active: body.verified, _id })
+    return this.marketerService.verifyMarketer({ state: body.verified, _id })
   }
 }

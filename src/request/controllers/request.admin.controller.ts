@@ -43,6 +43,6 @@ export class AdminRequestController {
   toggle(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.adminRequestService.toggleRequest({ active: body.active, _id })
+    return this.adminRequestService.toggleRequest({ state: body.active, _id })
   }
 }

@@ -13,7 +13,7 @@ export class MarketerCampaignPriceService {
     try {
       return await this.campaignPriceModel.findOne({})
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -22,7 +22,7 @@ export class MarketerCampaignPriceService {
       await this.campaignPriceModel.deleteMany({})
       return await new this.campaignPriceModel(createMarketerCampaignPriceDto).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 }

@@ -22,7 +22,7 @@ export class AdvertiserService {
       const count = await this.advertiserModel.countDocuments({})
       return { data: advertisers, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -30,27 +30,27 @@ export class AdvertiserService {
     try {
       return await this.advertiserModel.findOne({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   activateAdvertiser = async (toggleDto: ToggleDto) => {
     try {
       return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        active: Boolean(toggleDto.active)
+        active: Boolean(toggleDto.state)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   verifyAdvertiser = async (toggleDto: ToggleDto) => {
     try {
       return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
-        verified: Boolean(toggleDto.active)
+        verified: Boolean(toggleDto.state)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -64,7 +64,7 @@ export class AdvertiserService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -75,7 +75,7 @@ export class AdvertiserService {
         password: sha1(editAdvertiserDto.password)
       })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -83,7 +83,7 @@ export class AdvertiserService {
     try {
       return await this.advertiserModel.findOneAndDelete({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

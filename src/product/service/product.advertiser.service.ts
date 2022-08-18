@@ -24,7 +24,7 @@ export class AdvertiserProductService {
       const count = await this.productModel.countDocuments({ advertiser: advertiser._id })
       return { data: products, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -32,7 +32,7 @@ export class AdvertiserProductService {
     try {
       return await this.productModel.findOne({ _id, advertiser: advertiser._id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -48,7 +48,7 @@ export class AdvertiserProductService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -56,16 +56,16 @@ export class AdvertiserProductService {
     try {
       return await this.productModel.findOneAndUpdate({ _id: editProductDto._id }, editProductDto)
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   toggleProduct = async (toggleDto: ToggleDto) => {
     try {
       return await this.productModel.findOneAndUpdate({ _id: toggleDto._id },
-        { active: Boolean(toggleDto.active) })
+        { active: Boolean(toggleDto.state) })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -75,7 +75,7 @@ export class AdvertiserProductService {
     try {
       return await this.productModel.findOneAndDelete({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

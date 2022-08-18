@@ -52,7 +52,7 @@ export class AdvertiserProductController {
   toggle(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.advertiserProductService.toggleProduct({ active: body.active, _id })
+    return this.advertiserProductService.toggleProduct({ state: body.active, _id })
   }
 
   @Delete(':_id')

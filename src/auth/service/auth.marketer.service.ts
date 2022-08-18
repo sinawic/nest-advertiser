@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Advertiser } from '../../advertiser/schemas';
+import { Marketer } from '../../marketer/schemas';
 
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -8,29 +8,29 @@ import { sha1 } from '../../common/utils';
 import { CreateUserDto, LoginUserDto } from '../dto';
 
 @Injectable()
-export class AdvertiserAuthService {
+export class MarketerAuthService {
   constructor(
     private jwt: JwtService,
-    @InjectModel(Advertiser.name) private advertiserModel: Model<any>
+    @InjectModel(Marketer.name) private marketerModel: Model<any>
   ) { }
 
-  validateAdvertiserLogin = async (loginUserDto: LoginUserDto) => {
+  validateMarketerLogin = async (loginUserDto: LoginUserDto) => {
     try {
-      const advertiser = await this.advertiserModel.findOne({
+      const marketer = await this.marketerModel.findOne({
         ...loginUserDto, password: sha1(loginUserDto.password), active: true
       })
-      if (!advertiser)
+      if (!marketer)
         throw new HttpException('Invalid username or password or not active', HttpStatus.BAD_REQUEST)
 
-      return this.signToken(advertiser);
+      return this.signToken(marketer);
     } catch (error: any) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
-  registerAdvertiser = async (createUserDto: CreateUserDto) => {
+  registerMarketer = async (createUserDto: CreateUserDto) => {
     try {
-      return await new this.advertiserModel({
+      return await new this.marketerModel({
         ...createUserDto,
         date_created: new Date(),
         password: sha1(createUserDto.password)
@@ -50,8 +50,8 @@ export class AdvertiserAuthService {
     };
   }
 
-  getRequesterAdvertiser = async ({ _id }) => {
-    return await this.advertiserModel.findOne({
+  getRequesterMarketer = async ({ _id }) => {
+    return await this.marketerModel.findOne({
       _id
     }).select('-password')
   }

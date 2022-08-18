@@ -35,13 +35,13 @@ export class AdvertiserAdminController {
   activate(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.advertiserService.activateAdvertiser({ active: body.active, _id })
+    return this.advertiserService.activateAdvertiser({ state: body.active, _id })
   }
 
   @Patch('verify/:_id')
   verify(
     @Param('_id') _id: IdDto,
     @Body() body) {
-    return this.advertiserService.verifyAdvertiser({ active: body.verified, _id })
+    return this.advertiserService.verifyAdvertiser({ state: body.verified, _id })
   }
 }

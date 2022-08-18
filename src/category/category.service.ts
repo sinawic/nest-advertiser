@@ -19,7 +19,7 @@ export class CategoryService {
       const count = await this.categoryModel.countDocuments(active ? { active } : {})
       return { data: categories, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -27,7 +27,7 @@ export class CategoryService {
     try {
       return await this.categoryModel.findOne(active ? { _id, active } : { _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -40,7 +40,7 @@ export class CategoryService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -48,16 +48,16 @@ export class CategoryService {
     try {
       return await this.categoryModel.findOneAndUpdate({ _id: editCategoryDto._id }, editCategoryDto)
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
   toggleCategory = async (toggleDto: ToggleDto) => {
     try {
       return await this.categoryModel.findOneAndUpdate({ _id: toggleDto._id },
-        { active: Boolean(toggleDto.active) })
+        { active: Boolean(toggleDto.state) })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -67,7 +67,7 @@ export class CategoryService {
     try {
       return await this.categoryModel.findOneAndDelete({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

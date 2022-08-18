@@ -5,7 +5,7 @@ import { IdDto } from './_id.dto';
 export class ToggleDto {
   @IsBoolean()
   @IsNotEmpty()
-  active: boolean;
+  state: boolean;
 
   @Type(() => IdDto)
   _id: IdDto;

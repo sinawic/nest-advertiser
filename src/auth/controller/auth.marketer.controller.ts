@@ -1,23 +1,28 @@
 import {
   Body,
   Controller,
+  HttpException,
+  HttpStatus,
   Post,
 } from '@nestjs/common';
-import { CreateUserDto, LoginUserDto } from '../dto';
-import { AdvertiserAuthService } from '../service';
+import { pageTypes } from '../../common/utils';
+import { CreateMarketerDto, LoginMarketerDto } from '../dto';
+import { MarketerAuthService } from '../service';
 
 @Controller('marketer/')
-export class AdvertiserAuthController {
-  constructor(private authService: AdvertiserAuthService) { }
+export class MarketerAuthController {
+  constructor(private authService: MarketerAuthService) { }
 
   @Post('login')
-  login(@Body() loginUserDto: LoginUserDto) {
-    return this.authService.validateAdvertiserLogin(loginUserDto)
+  login(@Body() loginMarketerDto: LoginMarketerDto) {
+    return this.authService.validateMarketerLogin(loginMarketerDto)
   }
 
   @Post('register')
-  register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.registerAdvertiser(createUserDto)
+  register(@Body() createMarketerDto: CreateMarketerDto) {
+    if (pageTypes.indexOf(createMarketerDto.page_type) === -1)
+      throw new HttpException({ message: 'page type unsupported' }, HttpStatus.BAD_REQUEST)
+    return this.authService.registerMarketer(createMarketerDto)
   }
 
 }

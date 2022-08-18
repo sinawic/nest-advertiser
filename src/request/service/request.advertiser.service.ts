@@ -21,7 +21,7 @@ export class AdvertiserRequestService {
       const count = await this.requestModel.countDocuments({ advertiser: advertiser._id })
       return { data: products, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -41,7 +41,7 @@ export class AdvertiserRequestService {
           }
         }])
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -50,7 +50,7 @@ export class AdvertiserRequestService {
       return await this.requestModel.findOneAndUpdate({ _id, adevertiser: advertiser._id },
         { $set: { screenshot: file } })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 }

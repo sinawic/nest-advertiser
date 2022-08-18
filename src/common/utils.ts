@@ -5,3 +5,6 @@ export const sha1 = (val: string) => {
   shasum.update(val)
   return shasum.digest('hex')
 }
+
+export const serviceTypes = ['sms_panel', 'buy_link', 'introducer_code', 'discount_code', 'share_link']
+export const pageTypes = ['instagram', 'facebook', 'youtube', 'telegram', 'vk']

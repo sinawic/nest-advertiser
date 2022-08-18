@@ -19,7 +19,7 @@ export class CampaignPercentService {
       const count = await this.campaignPercentModel.countDocuments({})
       return { data: campaignPercents, count }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -27,7 +27,7 @@ export class CampaignPercentService {
     try {
       return await this.campaignPercentModel.findOne({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -38,7 +38,7 @@ export class CampaignPercentService {
         date_created: new Date()
       }).save()
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -46,7 +46,7 @@ export class CampaignPercentService {
     try {
       return await this.campaignPercentModel.findOneAndUpdate({ _id: editCampaignPercentDto._id }, editCampaignPercentDto)
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -57,7 +57,7 @@ export class CampaignPercentService {
     try {
       return await this.campaignPercentModel.findOneAndDelete({ _id })
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 

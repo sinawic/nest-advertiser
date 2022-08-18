@@ -12,7 +12,7 @@ export class AdminBalanceService {
       const balance = await this.adminBalanceModel.findOne({})
       return balance || { balance: 0 }
     } catch (error) {
-      throw new HttpException({ error: error.message }, HttpStatus.BAD_REQUEST)
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 }
