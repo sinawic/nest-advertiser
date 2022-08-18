@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type LevelDocument = MarketerCampaignPrice & Document;
+export type MarketerCampaignPriceDocument = MarketerCampaignPrice & Document;
 
 @Schema()
 export class MarketerCampaignPrice {

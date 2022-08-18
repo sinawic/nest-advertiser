@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-export type LevelDocument = CampaignPrice & Document;
+export type CampaignPriceDocument = CampaignPrice & Document;
 
 @Schema()
 export class CampaignPrice {
