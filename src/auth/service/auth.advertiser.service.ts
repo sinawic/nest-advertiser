@@ -5,7 +5,7 @@ import { Advertiser } from '../../advertiser/schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { sha1 } from '../../common/utils';
-import { CreateUserDto, LoginUserDto } from '../dto';
+import { CreateAdvertizerDto, LoginAdvertizerDto } from '../dto';
 
 @Injectable()
 export class AdvertiserAuthService {
@@ -14,10 +14,10 @@ export class AdvertiserAuthService {
     @InjectModel(Advertiser.name) private advertiserModel: Model<any>
   ) { }
 
-  validateAdvertiserLogin = async (loginUserDto: LoginUserDto) => {
+  validateAdvertiserLogin = async (loginAdvertizerDto: LoginAdvertizerDto) => {
     try {
       const advertiser = await this.advertiserModel.findOne({
-        ...loginUserDto, password: sha1(loginUserDto.password), active: true
+        ...loginAdvertizerDto, password: sha1(loginAdvertizerDto.password), active: true
       })
       if (!advertiser)
         throw new HttpException('Invalid username or password or not active', HttpStatus.BAD_REQUEST)
@@ -28,12 +28,12 @@ export class AdvertiserAuthService {
     }
   }
 
-  registerAdvertiser = async (createUserDto: CreateUserDto) => {
+  registerAdvertiser = async (createAdvertizerDto: CreateAdvertizerDto) => {
     try {
       return await new this.advertiserModel({
-        ...createUserDto,
+        ...createAdvertizerDto,
         date_created: new Date(),
-        password: sha1(createUserDto.password)
+        password: sha1(createAdvertizerDto.password)
       }).save()
     } catch (error: any) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)

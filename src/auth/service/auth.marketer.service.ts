@@ -5,7 +5,7 @@ import { Marketer } from '../../marketer/schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { sha1 } from '../../common/utils';
-import { CreateUserDto, LoginUserDto } from '../dto';
+import { CreateMarketerDto, LoginMarketerDto } from '../dto';
 
 @Injectable()
 export class MarketerAuthService {
@@ -14,10 +14,10 @@ export class MarketerAuthService {
     @InjectModel(Marketer.name) private marketerModel: Model<any>
   ) { }
 
-  validateMarketerLogin = async (loginUserDto: LoginUserDto) => {
+  validateMarketerLogin = async (loginMarketerDto: LoginMarketerDto) => {
     try {
       const marketer = await this.marketerModel.findOne({
-        ...loginUserDto, password: sha1(loginUserDto.password), active: true
+        ...loginMarketerDto, password: sha1(loginMarketerDto.password), active: true
       })
       if (!marketer)
         throw new HttpException('Invalid username or password or not active', HttpStatus.BAD_REQUEST)
@@ -28,12 +28,14 @@ export class MarketerAuthService {
     }
   }
 
-  registerMarketer = async (createUserDto: CreateUserDto) => {
+  registerMarketer = async (createMarketerDto: CreateMarketerDto) => {
     try {
+      if (createMarketerDto.parent && !await this.marketerModel.findById(createMarketerDto.parent))
+        throw new HttpException('Parent not found', HttpStatus.BAD_REQUEST)
       return await new this.marketerModel({
-        ...createUserDto,
+        ...createMarketerDto,
         date_created: new Date(),
-        password: sha1(createUserDto.password)
+        password: sha1(createMarketerDto.password)
       }).save()
     } catch (error: any) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
