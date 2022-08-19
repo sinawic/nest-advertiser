@@ -15,7 +15,6 @@ export class CampaignAdvertiserService {
     @InjectModel(Campaign.name) private campaignModel: Model<any>,
     @InjectModel(CampaignPrice.name) private campaignPriceModel: Model<any>,
     @InjectModel(CampaignPercent.name) private campaignPercentModel: Model<any>,
-    @InjectModel(Level.name) private levelModel: Model<any>,
   ) { }
 
   getCampaigns = async (paginationDto: PaginationDto, advertiser) => {
