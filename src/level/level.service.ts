@@ -10,22 +10,22 @@ import { ToggleDto } from '../common/dto/toggle.dto';
 export class LevelService {
   constructor(@InjectModel(Level.name) private levelModel: Model<any>) { }
 
-  getLevels = async (paginationDto: PaginationDto, active: boolean = false) => {
+  getLevels = async (paginationDto: PaginationDto) => {
     try {
-      const categories = await this.levelModel.find(active ? { active } : {})
+      const categories = await this.levelModel.find({})
         .sort({ 'date_created': -1 })
         .skip((paginationDto.page - 1) * paginationDto.paging)
         .limit((paginationDto.page - 1) * paginationDto.paging + paginationDto.paging)
-      const count = await this.levelModel.countDocuments(active ? { active } : {})
+      const count = await this.levelModel.countDocuments({})
       return { data: categories, count }
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
-  getLevelDetails = async (_id: IdDto, active: boolean = false) => {
+  getLevelDetails = async (_id: IdDto) => {
     try {
-      return await this.levelModel.findOne(active ? { _id, active } : { _id })
+      return await this.levelModel.findOne({ _id })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

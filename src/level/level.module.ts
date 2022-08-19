@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { LevelAdminController } from './controllers';
+import { LevelAdminController, LevelController } from './controllers';
 import { LevelService } from './level.service';
 
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,7 +11,7 @@ import { BasicStrategy } from '../auth/Strategy';
   imports: [
     MongooseModule.forFeature([
       { name: Level.name, schema: LevelSchema }])],
-  controllers: [LevelAdminController],
+  controllers: [LevelAdminController, LevelController],
   providers: [LevelService, BasicStrategy]
 })
 export class LevelModule { }
