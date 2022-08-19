@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Campaign } from '../schemas';
 import { IdDto, PaginationDto, StateChangeDto } from '../../common/dto';
 import { CreateCampaignDto, EditCampaignDto } from '../dto';
-import { Level } from '../../level/schemas';
 import { CampaignPrice } from '../../campaignPrice/schemas';
 import { CampaignPercent } from '../../campaignPercent/schemas';
 import { timeDif } from 'src/common/utils';
