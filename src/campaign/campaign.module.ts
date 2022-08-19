@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CampaignAdvertiserController } from './controllers';
-import { CampaignAdvertiserService } from './service';
+import { CampaignAdvertiserController, CampaignAdminController } from './controllers';
+import { CampaignAdvertiserService, CampaignAdminService } from './service';
 
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -22,7 +22,7 @@ import { CampaignPercent, CampaignPercentSchema } from '../campaignPercent/schem
       { name: CampaignPercent.name, schema: CampaignPercentSchema },
       { name: Level.name, schema: LevelSchema },
       { name: Advertiser.name, schema: AdvertiserSchema }])],
-  controllers: [CampaignAdvertiserController],
-  providers: [CampaignAdvertiserService, AdvertiserJwtStrategy, AdvertiserAuthService]
+  controllers: [CampaignAdvertiserController, CampaignAdminController],
+  providers: [CampaignAdvertiserService, CampaignAdminService, AdvertiserJwtStrategy, AdvertiserAuthService]
 })
 export class CampaignModule { }
