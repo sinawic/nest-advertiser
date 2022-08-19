@@ -32,6 +32,7 @@ export class CampaignPriceService {
   }
 
   createCampaignPrice = async (createCampaignPriceDto: CreateCampaignPriceDto) => {
+    console.log(createCampaignPriceDto)
     try {
       return await new this.campaignPriceModel({
         ...createCampaignPriceDto,

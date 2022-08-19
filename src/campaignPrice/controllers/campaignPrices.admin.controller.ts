@@ -4,6 +4,8 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -16,6 +18,7 @@ import { BasicGuard } from '../../auth/Guard';
 import { CampaignPriceService } from '../campaignPrice.service'
 import { CreateCampaignPriceDto } from '../dto';
 import { IdDto } from '../../common/dto';
+import { serviceTypes } from '../../common/utils';
 
 @UseGuards(BasicGuard)
 @Controller('admin/campaignPrice')
@@ -36,6 +39,8 @@ export class CampaignPriceAdminController {
 
   @Post()
   create(@Body() createCampaignPriceDto: CreateCampaignPriceDto) {
+    if (serviceTypes.indexOf(createCampaignPriceDto.campaign_type) === -1)
+      throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
     return this.campaignPriceService.createCampaignPrice(createCampaignPriceDto)
   }
 

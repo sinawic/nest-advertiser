@@ -8,3 +8,8 @@ export const sha1 = (val: string) => {
 
 export const serviceTypes = ['sms_panel', 'buy_link', 'introducer_code', 'discount_code', 'share_link']
 export const pageTypes = ['instagram', 'facebook', 'youtube', 'telegram', 'vk']
+export const campaignStates = ['done', 'process', 'hold']
+
+export const timeDif = (start: Date, end: Date) => {
+  return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
+}
