@@ -41,10 +41,10 @@ export class Campaign {
   @Prop({ default: new Date() })
   end_date: Date;
 
-  @Prop({ required: false, ref: 'level' })
+  @Prop({ required: true, ref: 'level' })
   level: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ required: false, ref: 'advertiser' })
+  @Prop({ required: true, ref: 'advertiser' })
   advertiser: mongoose.Schema.Types.ObjectId;
 }
 

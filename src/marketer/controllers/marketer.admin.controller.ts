@@ -34,14 +34,21 @@ export class MarketerAdminController {
   @Patch(':_id')
   activate(
     @Param('_id') _id: IdDto,
-    @Body() body) {
-    return this.marketerService.activateMarketer({ state: body.active, _id })
+    @Body() { active }) {
+    return this.marketerService.activateMarketer({ state: active, _id })
   }
 
   @Patch('verify/:_id')
   verify(
     @Param('_id') _id: IdDto,
-    @Body() body) {
-    return this.marketerService.verifyMarketer({ state: body.verified, _id })
+    @Body() { verified }) {
+    return this.marketerService.verifyMarketer({ state: verified, _id })
+  }
+
+  @Patch('level/:_id')
+  assignLevel(
+    @Param('_id') _id: IdDto,
+    @Body() { level }) {
+    return this.marketerService.assignLevel({ level, _id })
   }
 }

@@ -2,15 +2,18 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { sha1 } from '../common/utils';
-import { CreateMarketerDto, EditMarketerDto } from './dto';
+import { AssignMarketerLevelDto, CreateMarketerDto, EditMarketerDto } from './dto';
 import { Marketer } from './schemas';
+import { Level } from './../level/schemas';
 import { IdDto, PaginationDto } from '../common/dto';
 import { ToggleDto } from 'src/common/dto/toggle.dto';
 const crypto = require('crypto')
 
 @Injectable()
 export class MarketerService {
-  constructor(@InjectModel(Marketer.name) private marketerModel: Model<any>) { }
+  constructor(
+    @InjectModel(Marketer.name) private marketerModel: Model<any>,
+    @InjectModel(Level.name) private levelModel: Model<any>) { }
 
   getMarketers = async (paginationDto: PaginationDto) => {
     try {
@@ -54,34 +57,11 @@ export class MarketerService {
     }
   }
 
-  // 
-
-  createMarketer = async (createMarketerDto: CreateMarketerDto) => {
+  assignLevel = async (assignMarketerLevelDto: AssignMarketerLevelDto) => {
+    if (!await this.levelModel.findOne({ _id: assignMarketerLevelDto.level }))
+      throw new HttpException({ message: 'Level not found' }, HttpStatus.BAD_REQUEST)
     try {
-      return await new this.marketerModel({
-        ...createMarketerDto,
-        password: sha1(createMarketerDto.password),
-        date_created: new Date()
-      }).save()
-    } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
-    }
-  }
-
-  editMarketer = async (editMarketerDto: EditMarketerDto) => {
-    try {
-      return await this.marketerModel.findOneAndUpdate({ _id: editMarketerDto._id }, {
-        ...editMarketerDto,
-        password: sha1(editMarketerDto.password)
-      })
-    } catch (error) {
-      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
-    }
-  }
-
-  deleteMarketer = async (_id: IdDto) => {
-    try {
-      return await this.marketerModel.findOneAndDelete({ _id })
+      return await this.marketerModel.findOneAndUpdate({ _id: assignMarketerLevelDto._id }, { level: assignMarketerLevelDto.level })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

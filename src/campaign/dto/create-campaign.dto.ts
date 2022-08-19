@@ -42,7 +42,7 @@ export class CreateCampaignDto {
 
   @IsString()
   @Type(() => IdDto)
-  marketer_level: IdDto;
+  level: IdDto;
 }
 
 export class EditCampaignDto {
@@ -74,7 +74,7 @@ export class EditCampaignDto {
 
   @IsString()
   @Type(() => IdDto)
-  marketer_level: IdDto;
+  level: IdDto;
 
   @Type(() => IdDto)
   _id: IdDto;

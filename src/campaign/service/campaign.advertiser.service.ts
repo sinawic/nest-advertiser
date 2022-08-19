@@ -41,14 +41,14 @@ export class CampaignAdvertiserService {
     try {
       const prices = await this.campaignPriceModel.findOne({
         campaign_type: createCampaignDto.type,
-        level: createCampaignDto.marketer_level
+        level: createCampaignDto.level
       })
       if (!prices)
         throw new HttpException({ message: 'prices are not defined for this level and campaign type' }, HttpStatus.BAD_REQUEST)
 
       const percents = await this.campaignPercentModel.findOne({
         campaign_type: createCampaignDto.type,
-        level: createCampaignDto.marketer_level
+        level: createCampaignDto.level
       })
       if (!percents)
         throw new HttpException({ message: 'percentages are not defined for this level and campaign type' }, HttpStatus.BAD_REQUEST)
@@ -74,7 +74,7 @@ export class CampaignAdvertiserService {
 
       const prices = await this.campaignPriceModel.findOne({
         campaign_type: editCampaignDto.type,
-        level: editCampaignDto.marketer_level
+        level: editCampaignDto.level
       })
 
       let dif = timeDif(editCampaignDto.start_date, editCampaignDto.end_date)
