@@ -2,18 +2,12 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Campaign } from '../schemas';
-import { IdDto, PaginationDto, StateChangeDto } from '../../common/dto';
-import { CreateCampaignDto, EditCampaignDto } from '../dto';
-import { CampaignPrice } from '../../campaignPrice/schemas';
-import { CampaignPercent } from '../../campaignPercent/schemas';
-import { timeDif } from 'src/common/utils';
+import { IdDto, PaginationDto } from '../../common/dto';
 
 @Injectable()
 export class CampaignMarketerService {
   constructor(
     @InjectModel(Campaign.name) private campaignModel: Model<any>,
-    @InjectModel(CampaignPrice.name) private campaignPriceModel: Model<any>,
-    @InjectModel(CampaignPercent.name) private campaignPercentModel: Model<any>,
   ) { }
 
   getCampaigns = async (paginationDto: PaginationDto, marketer) => {
