@@ -13,6 +13,7 @@ import { MarketerCampaignPriceModule } from './marketerCampaignPrice/marketerCam
 import { AdminBalanceModule } from './adminBalance/adminBalance.module';
 import { MarketersModule } from './marketer/marketer.module';
 import { CampaignModule } from './campaign/campaign.module';
+import { JoinModule } from './join/join.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -33,6 +34,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     AdminBalanceModule,
     MarketersModule,
     CampaignModule,
+    JoinModule,
     AuthModule
   ],
   providers: []

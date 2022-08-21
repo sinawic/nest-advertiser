@@ -39,6 +39,11 @@ export class CampaignAdvertiserService {
 
   createCampaign = async (createCampaignDto: CreateCampaignDto, advertiser) => {
     try {
+      if (createCampaignDto.type === 'discount_code' &&
+        (!createCampaignDto.discount_percent || !createCampaignDto.discount_usable_count)) {
+        throw new HttpException({ message: 'discount_percent and discount_usable_count are required in this type' }, HttpStatus.BAD_REQUEST)
+      }
+
       const prices = await this.campaignPriceModel.findOne({
         campaign_type: createCampaignDto.type,
         level: createCampaignDto.level

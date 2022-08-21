@@ -40,6 +40,16 @@ export class CreateCampaignDto {
   @MinDate(new Date())
   end_date: Date;
 
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  discount_usable_count: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  discount_percent: number;
+
   @IsString()
   @Type(() => IdDto)
   level: IdDto;
@@ -71,6 +81,16 @@ export class EditCampaignDto {
   @IsDate()
   @MinDate(new Date())
   end_date: Date;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  discount_usable_count: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  discount_percent: number;
 
   @IsString()
   @Type(() => IdDto)

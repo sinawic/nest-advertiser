@@ -33,6 +33,9 @@ export class CampaignPercentService {
 
   createCampaignPercent = async (createCampaignPercentDto: CreateCampaignPercentDto) => {
     try {
+      if (createCampaignPercentDto.campaign_type === 'introducer_code'
+        && !createCampaignPercentDto.advertizer_percent)
+        throw new HttpException({ message: 'Advertizer percent is required in this type' }, HttpStatus.BAD_REQUEST)
       return await new this.campaignPercentModel({
         ...createCampaignPercentDto,
         date_created: new Date()

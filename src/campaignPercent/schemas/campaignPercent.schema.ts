@@ -15,7 +15,7 @@ export class CampaignPercent {
   @Prop({ required: true })
   admin_percent: number;
 
-  @Prop({ required: true })
+  @Prop({ default: 0 })
   advertizer_percent: number;
 
   @Prop({ default: new Date() })

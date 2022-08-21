@@ -23,7 +23,7 @@ export class CreateCampaignPercentDto {
   admin_percent: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   advertizer_percent: number;
 
   @IsString()

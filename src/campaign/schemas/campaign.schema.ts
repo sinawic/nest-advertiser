@@ -41,6 +41,12 @@ export class Campaign {
   @Prop({ default: new Date() })
   end_date: Date;
 
+  @Prop({ default: null })
+  discount_usable_count: number;
+
+  @Prop({ default: null })
+  discount_percent: number;
+
   @Prop({ required: true, ref: 'level' })
   level: mongoose.Schema.Types.ObjectId;
 
