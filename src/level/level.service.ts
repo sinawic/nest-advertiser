@@ -2,13 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Level } from './schemas';
+import { Marketer } from '../marketer/schemas';
 import { IdDto, PaginationDto } from '../common/dto';
 import { CreateLevelDto, EditLevelDto } from './dto';
-import { ToggleDto } from '../common/dto/toggle.dto';
 
 @Injectable()
 export class LevelService {
-  constructor(@InjectModel(Level.name) private levelModel: Model<any>) { }
+  constructor(@InjectModel(Level.name) private levelModel: Model<any>,
+    @InjectModel(Marketer.name) private marketerModel: Model<any>) { }
 
   getLevels = async (paginationDto: PaginationDto) => {
     try {
@@ -51,9 +52,9 @@ export class LevelService {
   }
 
   deleteLevel = async (_id: IdDto) => {
-    // todo: check if there are any marketers with this level
-    // if (await this.levelModel.findOne({ parent: _id }))
-    //   throw new HttpException({ message: 'Cant remove parent level' }, HttpStatus.BAD_REQUEST)
+    if (await this.marketerModel.findOne({}))
+      throw new HttpException({ message: 'marketer already exist with this level' }, HttpStatus.BAD_REQUEST)
+
     try {
       return await this.levelModel.findOneAndDelete({ _id })
     } catch (error) {

@@ -4,11 +4,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CampaignPrice } from './schemas';
 import { IdDto, PaginationDto } from '../common/dto';
 import { CreateCampaignPriceDto, EditCampaignPriceDto } from './dto';
-import { ToggleDto } from '../common/dto/toggle.dto';
+import { Campaign } from './../campaign/schemas';
 
 @Injectable()
 export class CampaignPriceService {
-  constructor(@InjectModel(CampaignPrice.name) private campaignPriceModel: Model<any>) { }
+  constructor(@InjectModel(CampaignPrice.name) private campaignPriceModel: Model<any>,
+    @InjectModel(Campaign.name) private campaignModel: Model<any>) { }
 
   getCampaignPrices = async (paginationDto: PaginationDto) => {
     try {
@@ -51,9 +52,9 @@ export class CampaignPriceService {
   }
 
   deleteCampaignPrice = async (_id: IdDto) => {
-    // todo: check if there are any marketers with this campaignPrice
-    // if (await this.campaignPriceModel.findOne({ parent: _id }))
-    //   throw new HttpException({ message: 'Cant remove parent campaignPrice' }, HttpStatus.BAD_REQUEST)
+    if (await this.campaignModel.findOne({}))
+      throw new HttpException({ message: 'Cannot delete campaign percent because it has campaigns' }, HttpStatus.BAD_REQUEST)
+
     try {
       return await this.campaignPriceModel.findOneAndDelete({ _id })
     } catch (error) {

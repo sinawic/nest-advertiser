@@ -2,13 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CampaignPercent } from './schemas';
+import { Campaign } from './../campaign/schemas';
 import { IdDto, PaginationDto } from '../common/dto';
 import { CreateCampaignPercentDto, EditCampaignPercentDto } from './dto';
-import { ToggleDto } from '../common/dto/toggle.dto';
 
 @Injectable()
 export class CampaignPercentService {
-  constructor(@InjectModel(CampaignPercent.name) private campaignPercentModel: Model<any>) { }
+  constructor(@InjectModel(CampaignPercent.name) private campaignPercentModel: Model<any>,
+    @InjectModel(Campaign.name) private campaignModel: Model<any>) { }
 
   getCampaignPercents = async (paginationDto: PaginationDto) => {
     try {
@@ -54,9 +55,9 @@ export class CampaignPercentService {
   }
 
   deleteCampaignPercent = async (_id: IdDto) => {
-    // todo: check if there are any marketers with this campaignPercent
-    // if (await this.campaignPercentModel.findOne({ parent: _id }))
-    //   throw new HttpException({ message: 'Cant remove parent campaignPercent' }, HttpStatus.BAD_REQUEST)
+    if (await this.campaignModel.findOne({}))
+      throw new HttpException({ message: 'Cannot delete campaign percent because it has campaigns' }, HttpStatus.BAD_REQUEST)
+
     try {
       return await this.campaignPercentModel.findOneAndDelete({ _id })
     } catch (error) {

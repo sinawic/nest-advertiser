@@ -5,12 +5,14 @@ import { LevelService } from './level.service';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { Level, LevelSchema } from './schemas';
+import { Marketer, MarketerSchema } from '../marketer/schemas';
 import { BasicStrategy } from '../auth/Strategy';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Level.name, schema: LevelSchema }])],
+      { name: Level.name, schema: LevelSchema },
+      { name: Marketer.name, schema: MarketerSchema }])],
   controllers: [LevelAdminController, LevelController],
   providers: [LevelService, BasicStrategy]
 })

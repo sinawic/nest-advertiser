@@ -6,7 +6,9 @@ import { IdDto, PaginationDto, StateChangeDto } from '../../common/dto';
 import { CreateCampaignDto, EditCampaignDto } from '../dto';
 import { CampaignPrice } from '../../campaignPrice/schemas';
 import { CampaignPercent } from '../../campaignPercent/schemas';
-import { timeDif } from 'src/common/utils';
+import { ObjectionDate } from '../../objectionDate/schemas';
+import { Join } from '../../join/schemas';
+import { addDays, timeDif } from 'src/common/utils';
 
 @Injectable()
 export class CampaignAdvertiserService {
@@ -14,6 +16,8 @@ export class CampaignAdvertiserService {
     @InjectModel(Campaign.name) private campaignModel: Model<any>,
     @InjectModel(CampaignPrice.name) private campaignPriceModel: Model<any>,
     @InjectModel(CampaignPercent.name) private campaignPercentModel: Model<any>,
+    @InjectModel(Join.name) private joinModel: Model<any>,
+    @InjectModel(ObjectionDate.name) private objectionDateModel: Model<any>
   ) { }
 
   getCampaigns = async (paginationDto: PaginationDto, advertiser) => {
@@ -75,8 +79,8 @@ export class CampaignAdvertiserService {
 
   editCampaign = async (editCampaignDto: EditCampaignDto, advertiser) => {
     try {
-      // todo: check if campaign has any marketer joined
-
+      if (await this.joinModel.findOne({ campaign: editCampaignDto._id }))
+        throw new HttpException({ message: 'campaign has marketers joined' }, HttpStatus.BAD_REQUEST)
       const prices = await this.campaignPriceModel.findOne({
         campaign_type: editCampaignDto.type,
         level: editCampaignDto.level
@@ -110,11 +114,15 @@ export class CampaignAdvertiserService {
 
   objectCampaign = async (stateChangeDto: StateChangeDto, advertiser) => {
     try {
+      const maxDays = await this.objectionDateModel.findOne({})
+      if (!maxDays)
+        throw new HttpException({ message: 'cannot validate objection action due to undefined max days' }, HttpStatus.BAD_REQUEST)
       const campaign = await this.campaignModel.findOne({ _id: stateChangeDto._id, advertiser: advertiser._id })
       if (!campaign)
         throw new HttpException({ message: 'campaign not found' }, HttpStatus.BAD_REQUEST)
-      if (campaign.state !== 'done' || campaign.objection)
-        throw new HttpException({ message: 'campaign is already taking place or you have already made an objection' }, HttpStatus.BAD_REQUEST)
+
+      if (campaign.state !== 'done' || campaign.objection || addDays(new Date(campaign.end_date), maxDays.max_days) < new Date())
+        throw new HttpException({ message: 'campaign is either expired or already taking place or you have already made an objection' }, HttpStatus.BAD_REQUEST)
       campaign.objection = stateChangeDto.state
       return await campaign.save()
     } catch (error) {
@@ -123,8 +131,9 @@ export class CampaignAdvertiserService {
   }
 
   deleteCampaign = async (_id: IdDto, advertiser) => {
-    // todo: check if campaign has any marketer joined
     try {
+      if (await this.joinModel.findOne({ campaign: _id }))
+        throw new HttpException({ message: 'campaign has marketers joined' }, HttpStatus.BAD_REQUEST)
       return await this.campaignModel.findOneAndDelete({ _id, advertiser: advertiser._id })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)

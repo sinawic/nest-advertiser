@@ -24,3 +24,8 @@ export const makeid = (length) => {
   }
   return result;
 }
+
+export const addDays = (date = new Date(), days: number) => {
+  date.setDate(date.getDate() + days);
+  return date;
+}

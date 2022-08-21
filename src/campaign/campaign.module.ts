@@ -13,6 +13,8 @@ import { AdvertiserAuthService, MarketerAuthService } from '../auth/service';
 import { Level, LevelSchema } from '../level/schemas';
 import { CampaignPrice, CampaignPriceSchema } from '../campaignPrice/schemas';
 import { CampaignPercent, CampaignPercentSchema } from '../campaignPercent/schemas';
+import { ObjectionDate, ObjectionDateSchema } from '../objectionDate/schemas';
+import { Join, JoinSchema } from '../join/schemas';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { CampaignPercent, CampaignPercentSchema } from '../campaignPercent/schem
       { name: CampaignPercent.name, schema: CampaignPercentSchema },
       { name: Level.name, schema: LevelSchema },
       { name: Advertiser.name, schema: AdvertiserSchema },
+      { name: ObjectionDate.name, schema: ObjectionDateSchema },
+      { name: Join.name, schema: JoinSchema },
       { name: Marketer.name, schema: MarketerSchema }])],
   controllers: [CampaignAdvertiserController, CampaignAdminController, CampaignMarketerController],
   providers: [CampaignAdvertiserService, CampaignAdminService, CampaignMarketerService, AdvertiserJwtStrategy, MarketerJwtStrategy, AdvertiserAuthService, MarketerAuthService]
