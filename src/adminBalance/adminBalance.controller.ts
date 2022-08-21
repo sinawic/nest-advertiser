@@ -12,7 +12,7 @@ export class AdminBalanceController {
   constructor(private adminBalanceService: AdminBalanceService) { }
 
   @Get()
-  getList() {
+  get() {
     return this.adminBalanceService.getAdminBalance()
   }
 

@@ -11,7 +11,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { MarketerAuthService } from '../auth/service';
 import { Level, LevelSchema } from '../level/schemas';
 import { Campaign, CampaignSchema } from '../campaign/schemas';
-import { MarketerCampaignPrice, MarketerCampaignPriceSchema } from '../marketerCampaignPrice/schemas';
+import {
+  MarketerCampaignPrice, MarketerCampaignPriceSchema,
+  MarketerDiscountPrice, MarketerDiscountPriceSchema
+} from '../marketerCampaignPrice/schemas';
 
 
 @Module({
@@ -22,7 +25,8 @@ import { MarketerCampaignPrice, MarketerCampaignPriceSchema } from '../marketerC
       { name: Campaign.name, schema: CampaignSchema },
       { name: Level.name, schema: LevelSchema },
       { name: Marketer.name, schema: MarketerSchema },
-      { name: MarketerCampaignPrice.name, schema: MarketerCampaignPriceSchema }])],
+      { name: MarketerCampaignPrice.name, schema: MarketerCampaignPriceSchema },
+      { name: MarketerDiscountPrice.name, schema: MarketerDiscountPriceSchema }])],
   controllers: [JoinMarketerController],
   providers: [JoinMarketerService, MarketerJwtStrategy, MarketerAuthService]
 })

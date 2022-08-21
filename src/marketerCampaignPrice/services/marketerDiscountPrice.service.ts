@@ -11,7 +11,7 @@ export class MarketerDiscountPriceService {
 
   getMarketerDiscountPrice = async () => {
     try {
-      return await this.campaignPriceModel.find({})
+      return { data: await this.campaignPriceModel.find({}) }
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
