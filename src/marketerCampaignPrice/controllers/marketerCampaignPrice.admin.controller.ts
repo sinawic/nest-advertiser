@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BasicGuard } from '../../auth/Guard';
-import { MarketerCampaignPriceService } from '../marketerCampaignPrice.service'
+import { MarketerCampaignPriceService } from '../services'
 import { CreateMarketerCampaignPriceDto } from '../dto';
 import { IdDto } from '../../common/dto';
 
@@ -17,7 +17,7 @@ export class MarketerCampaignPriceAdminController {
   constructor(private marketerCampaignPriceService: MarketerCampaignPriceService) { }
 
   @Get()
-  getById() {
+  get() {
     return this.marketerCampaignPriceService.getMarketerCampaignPrice()
   }
 

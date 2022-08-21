@@ -44,7 +44,7 @@ export class CampaignPriceService {
 
   editCampaignPrice = async (editCampaignPriceDto: EditCampaignPriceDto) => {
     try {
-      return await this.campaignPriceModel.findOneAndUpdate({ _id: editCampaignPriceDto._id }, editCampaignPriceDto)
+      return await this.campaignPriceModel.findOneAndUpdate({ _id: editCampaignPriceDto._id }, editCampaignPriceDto, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

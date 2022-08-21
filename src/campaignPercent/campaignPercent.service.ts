@@ -47,7 +47,7 @@ export class CampaignPercentService {
 
   editCampaignPercent = async (editCampaignPercentDto: EditCampaignPercentDto) => {
     try {
-      return await this.campaignPercentModel.findOneAndUpdate({ _id: editCampaignPercentDto._id }, editCampaignPercentDto)
+      return await this.campaignPercentModel.findOneAndUpdate({ _id: editCampaignPercentDto._id }, editCampaignPercentDto, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

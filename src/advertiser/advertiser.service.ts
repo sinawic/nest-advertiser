@@ -38,7 +38,7 @@ export class AdvertiserService {
     try {
       return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
         active: Boolean(toggleDto.state)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -48,7 +48,7 @@ export class AdvertiserService {
     try {
       return await this.advertiserModel.findOneAndUpdate({ _id: toggleDto._id }, {
         verified: Boolean(toggleDto.state)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -73,7 +73,7 @@ export class AdvertiserService {
       return await this.advertiserModel.findOneAndUpdate({ _id: editAdvertiserDto._id }, {
         ...editAdvertiserDto,
         password: sha1(editAdvertiserDto.password)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

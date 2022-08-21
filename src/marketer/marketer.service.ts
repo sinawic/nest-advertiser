@@ -41,7 +41,7 @@ export class MarketerService {
     try {
       return await this.marketerModel.findOneAndUpdate({ _id: toggleDto._id }, {
         active: Boolean(toggleDto.state)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -51,7 +51,7 @@ export class MarketerService {
     try {
       return await this.marketerModel.findOneAndUpdate({ _id: toggleDto._id }, {
         verified: Boolean(toggleDto.state)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -61,7 +61,7 @@ export class MarketerService {
     if (!await this.levelModel.findOne({ _id: assignMarketerLevelDto.level }))
       throw new HttpException({ message: 'Level not found' }, HttpStatus.BAD_REQUEST)
     try {
-      return await this.marketerModel.findOneAndUpdate({ _id: assignMarketerLevelDto._id }, { level: assignMarketerLevelDto.level })
+      return await this.marketerModel.findOneAndUpdate({ _id: assignMarketerLevelDto._id }, { level: assignMarketerLevelDto.level }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

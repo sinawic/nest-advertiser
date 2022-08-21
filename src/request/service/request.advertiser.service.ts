@@ -48,7 +48,7 @@ export class AdvertiserRequestService {
   verifyRequest = async (_id: IdDto, advertiser: { _id: IdDto; }, file: CreateAttachmentDto) => {
     try {
       return await this.requestModel.findOneAndUpdate({ _id, adevertiser: advertiser._id },
-        { $set: { screenshot: file } })
+        { $set: { screenshot: file } }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

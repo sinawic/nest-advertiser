@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { MarketerCampaignPrice } from './schemas';
-import { IdDto } from '../common/dto';
-import { CreateMarketerCampaignPriceDto } from './dto';
+import { MarketerCampaignPrice } from '../schemas';
+import { IdDto } from '../../common/dto';
+import { CreateMarketerCampaignPriceDto } from '../dto';
 
 @Injectable()
 export class MarketerCampaignPriceService {

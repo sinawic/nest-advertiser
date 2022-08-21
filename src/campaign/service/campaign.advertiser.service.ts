@@ -90,7 +90,7 @@ export class CampaignAdvertiserService {
         {
           ...editCampaignDto,
           final_price: (dif * prices.day_price) + (editCampaignDto.marketer_count * prices.marketer_price) + (editCampaignDto.product_count * prices.product_price)
-        })
+        }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

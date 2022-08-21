@@ -54,7 +54,7 @@ export class AdvertiserProductService {
 
   editProduct = async (editProductDto: EditProductDto) => {
     try {
-      return await this.productModel.findOneAndUpdate({ _id: editProductDto._id }, editProductDto)
+      return await this.productModel.findOneAndUpdate({ _id: editProductDto._id }, editProductDto, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -63,7 +63,7 @@ export class AdvertiserProductService {
   toggleProduct = async (toggleDto: ToggleDto) => {
     try {
       return await this.productModel.findOneAndUpdate({ _id: toggleDto._id },
-        { active: Boolean(toggleDto.state) })
+        { active: Boolean(toggleDto.state) }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

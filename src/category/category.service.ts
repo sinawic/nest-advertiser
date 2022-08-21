@@ -46,7 +46,7 @@ export class CategoryService {
 
   editCategory = async (editCategoryDto: EditCategoryDto) => {
     try {
-      return await this.categoryModel.findOneAndUpdate({ _id: editCategoryDto._id }, editCategoryDto)
+      return await this.categoryModel.findOneAndUpdate({ _id: editCategoryDto._id }, editCategoryDto, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -55,7 +55,7 @@ export class CategoryService {
   toggleCategory = async (toggleDto: ToggleDto) => {
     try {
       return await this.categoryModel.findOneAndUpdate({ _id: toggleDto._id },
-        { active: Boolean(toggleDto.state) })
+        { active: Boolean(toggleDto.state) }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

@@ -44,6 +44,7 @@ export class JoinMarketerService {
         throw new HttpException({ message: 'You have already joined this campaign' }, HttpStatus.BAD_REQUEST)
 
       // check if campaign price is defined and marketer has that much balance
+      // todo: check discount code campaign price
       const campaignPrice = await this.marketerCampaignPriceModel.findOne({})
       if (!campaignPrice)
         throw new HttpException({ message: 'Campaign join price not defined yet' }, HttpStatus.BAD_REQUEST)

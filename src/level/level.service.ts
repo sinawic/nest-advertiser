@@ -44,7 +44,7 @@ export class LevelService {
 
   editLevel = async (editLevelDto: EditLevelDto) => {
     try {
-      return await this.levelModel.findOneAndUpdate({ _id: editLevelDto._id }, editLevelDto)
+      return await this.levelModel.findOneAndUpdate({ _id: editLevelDto._id }, editLevelDto, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

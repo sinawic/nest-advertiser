@@ -48,7 +48,7 @@ export class AdminRequestService {
   toggleRequest = async (toggleDto: ToggleDto) => {
     try {
       return await this.requestModel.findOneAndUpdate({ _id: toggleDto._id },
-        { admin_verified: Boolean(toggleDto.state) })
+        { admin_verified: Boolean(toggleDto.state) }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

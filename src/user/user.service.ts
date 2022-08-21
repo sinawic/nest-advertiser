@@ -38,7 +38,7 @@ export class UserService {
     try {
       return await this.userModel.findOneAndUpdate({ _id: toggleDto._id }, {
         active: Boolean(toggleDto.state)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -48,7 +48,7 @@ export class UserService {
     try {
       return await this.userModel.findOneAndUpdate({ _id: toggleDto._id }, {
         verified: Boolean(toggleDto.state)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -73,7 +73,7 @@ export class UserService {
       return await this.userModel.findOneAndUpdate({ _id: editUserDto._id }, {
         ...editUserDto,
         password: sha1(editUserDto.password)
-      })
+      }, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
