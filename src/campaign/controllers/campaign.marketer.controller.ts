@@ -10,7 +10,7 @@ import {
 import { MarketerJwtGuard } from '../../auth/Guard';
 import { CampaignMarketerService } from '../service';
 import { IdDto } from '../../common/dto';
-import { MarketerDecorator } from 'src/auth/decorator/marketer.decorator';
+import { MarketerDecorator } from 'src/auth/decorator';
 
 @UseGuards(MarketerJwtGuard)
 @Controller('marketer/campaign')

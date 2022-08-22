@@ -3,12 +3,14 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CampaignPercent } from './schemas';
 import { Campaign } from './../campaign/schemas';
+import { Level } from './../level/schemas';
 import { IdDto, PaginationDto } from '../common/dto';
 import { CreateCampaignPercentDto, EditCampaignPercentDto } from './dto';
 
 @Injectable()
 export class CampaignPercentService {
   constructor(@InjectModel(CampaignPercent.name) private campaignPercentModel: Model<any>,
+    @InjectModel(Level.name) private levelModel: Model<any>,
     @InjectModel(Campaign.name) private campaignModel: Model<any>) { }
 
   getCampaignPercents = async (paginationDto: PaginationDto) => {
@@ -34,6 +36,8 @@ export class CampaignPercentService {
 
   createCampaignPercent = async (createCampaignPercentDto: CreateCampaignPercentDto) => {
     try {
+      if (!await this.levelModel.findOne({ _id: createCampaignPercentDto.level }))
+        throw new HttpException({ message: 'Invalid Level' }, HttpStatus.BAD_REQUEST)
       if (createCampaignPercentDto.campaign_type === 'introducer_code'
         && !createCampaignPercentDto.advertizer_percent)
         throw new HttpException({ message: 'Advertizer percent is required in this type' }, HttpStatus.BAD_REQUEST)
@@ -48,6 +52,8 @@ export class CampaignPercentService {
 
   editCampaignPercent = async (editCampaignPercentDto: EditCampaignPercentDto) => {
     try {
+      if (!await this.levelModel.findOne({ _id: editCampaignPercentDto.level }))
+        throw new HttpException({ message: 'Invalid Level' }, HttpStatus.BAD_REQUEST)
       return await this.campaignPercentModel.findOneAndUpdate({ _id: editCampaignPercentDto._id }, editCampaignPercentDto, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)

@@ -12,7 +12,7 @@ import {
 import { MarketerJwtGuard } from '../../auth/Guard';
 import { JoinMarketerService } from '../service';
 import { IdDto } from '../../common/dto';
-import { MarketerDecorator } from 'src/auth/decorator/marketer.decorator';
+import { MarketerDecorator } from 'src/auth/decorator';
 import { JoinDto } from '../dto';
 
 @UseGuards(MarketerJwtGuard)

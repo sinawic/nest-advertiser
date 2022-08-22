@@ -78,7 +78,7 @@ export class JoinCustomerService {
         join.used_count++
         await join.save()
 
-        return { message: 'success' }
+        return { message: 'success', discount_percent: join.discount_percent }
       } else
         throw new HttpException({ message: 'code expired' }, HttpStatus.BAD_REQUEST)
 

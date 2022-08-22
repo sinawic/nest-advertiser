@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CampaignPrice } from './schemas';
+import { Level } from './../level/schemas';
 import { IdDto, PaginationDto } from '../common/dto';
 import { CreateCampaignPriceDto, EditCampaignPriceDto } from './dto';
 import { Campaign } from './../campaign/schemas';
@@ -9,6 +10,7 @@ import { Campaign } from './../campaign/schemas';
 @Injectable()
 export class CampaignPriceService {
   constructor(@InjectModel(CampaignPrice.name) private campaignPriceModel: Model<any>,
+    @InjectModel(Level.name) private levelModel: Model<any>,
     @InjectModel(Campaign.name) private campaignModel: Model<any>) { }
 
   getCampaignPrices = async (paginationDto: PaginationDto) => {
@@ -34,6 +36,8 @@ export class CampaignPriceService {
 
   createCampaignPrice = async (createCampaignPriceDto: CreateCampaignPriceDto) => {
     try {
+      if (!await this.levelModel.findOne({ _id: createCampaignPriceDto.level }))
+        throw new HttpException({ message: 'Invalid Level' }, HttpStatus.BAD_REQUEST)
       return await new this.campaignPriceModel({
         ...createCampaignPriceDto,
         date_created: new Date()
@@ -45,6 +49,8 @@ export class CampaignPriceService {
 
   editCampaignPrice = async (editCampaignPriceDto: EditCampaignPriceDto) => {
     try {
+      if (!await this.levelModel.findOne({ _id: editCampaignPriceDto.level }))
+        throw new HttpException({ message: 'Invalid Level' }, HttpStatus.BAD_REQUEST)
       return await this.campaignPriceModel.findOneAndUpdate({ _id: editCampaignPriceDto._id }, editCampaignPriceDto, { new: true })
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)

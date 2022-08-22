@@ -7,7 +7,7 @@ import {
 import { JoinAdvertizerService } from '../service';
 import { JoinIntroducerCodeDto } from '../dto';
 import { AdvertiserJwtGuard } from '../../auth/Guard';
-import { GetUser } from 'src/auth/decorator';
+import { AdvertizerDecorator } from 'src/auth/decorator';
 
 @UseGuards(AdvertiserJwtGuard)
 @Controller('advertizer/join')
@@ -16,7 +16,7 @@ export class JoinAdvertizerController {
 
 
   @Post('introducerCode')
-  joinIntroducerCode(@Body() joinIntroducerCodeDto: JoinIntroducerCodeDto, @GetUser() advertiser) {
+  joinIntroducerCode(@Body() joinIntroducerCodeDto: JoinIntroducerCodeDto, @AdvertizerDecorator() advertiser) {
     return this.joinAdvertizerService.joinIntroducerCode(joinIntroducerCodeDto, advertiser)
   }
 }

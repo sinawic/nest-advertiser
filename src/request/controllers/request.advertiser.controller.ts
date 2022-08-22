@@ -13,7 +13,7 @@ import {
 import { AdvertiserRequestService } from '../service';
 import { IdDto } from '../../common/dto';
 import { AdvertiserJwtGuard } from '../../auth/Guard';
-import { GetUser } from '../../auth/decorator';
+import { AdvertizerDecorator } from '../../auth/decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { CreateAttachmentDto } from '../dto';
@@ -29,12 +29,12 @@ export class AdvertiserRequestController {
   getList(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('paging', new DefaultValuePipe(16), ParseIntPipe) paging: number,
-    @GetUser() advertiser) {
+    @AdvertizerDecorator() advertiser) {
     return this.advertiserRequestService.getRequests({ page, paging }, advertiser)
   }
 
   @Get(':_id')
-  getById(@Param('_id') _id: IdDto, @GetUser() advertiser) {
+  getById(@Param('_id') _id: IdDto, @AdvertizerDecorator() advertiser) {
     return this.advertiserRequestService.getRequestDetails(_id, advertiser)
   }
 
@@ -46,7 +46,7 @@ export class AdvertiserRequestController {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)),
     })
   }))
-  async verify(@Param('_id') _id: IdDto, @GetUser() advertiser, @UploadedFile() file: CreateAttachmentDto) {
+  async verify(@Param('_id') _id: IdDto, @AdvertizerDecorator() advertiser, @UploadedFile() file: CreateAttachmentDto) {
     const req = await this.advertiserRequestService.verifyRequest(_id, advertiser, file)
 
 

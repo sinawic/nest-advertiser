@@ -16,7 +16,7 @@ import { AdvertiserJwtGuard } from '../../auth/Guard';
 import { AdvertiserProductService } from '../service';
 import { CreateProductDto } from '../dto';
 import { IdDto } from '../../common/dto';
-import { GetUser } from 'src/auth/decorator';
+import { AdvertizerDecorator } from 'src/auth/decorator';
 
 @UseGuards(AdvertiserJwtGuard)
 @Controller('advertiser/product')
@@ -27,17 +27,17 @@ export class AdvertiserProductController {
   getList(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('paging', new DefaultValuePipe(16), ParseIntPipe) paging: number,
-    @GetUser() advertiser) {
+    @AdvertizerDecorator() advertiser) {
     return this.advertiserProductService.getProducts({ page, paging }, advertiser)
   }
 
   @Get(':_id')
-  getById(@Param('_id') _id: IdDto, @GetUser() advertiser) {
+  getById(@Param('_id') _id: IdDto, @AdvertizerDecorator() advertiser) {
     return this.advertiserProductService.getProductDetails(_id, advertiser)
   }
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto, @GetUser() advertiser) {
+  create(@Body() createProductDto: CreateProductDto, @AdvertizerDecorator() advertiser) {
     return this.advertiserProductService.createProduct(createProductDto, advertiser)
   }
 
