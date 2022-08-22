@@ -13,7 +13,7 @@ export class CampaignMarketerService {
   getCampaigns = async (paginationDto: PaginationDto, marketer) => {
     try {
       const campaigns = await this.campaignModel.find({
-        state: 'process', level: marketer.level, end_date: { $gt: new Date() },
+        state: 'process', level: marketer.level, end_date: { $gt: new Date() }, admin_verified: true,
         '$where': 'this.marketers_joined < this.marketer_count'
       })
         .sort({ 'date_created': -1 })
@@ -21,7 +21,7 @@ export class CampaignMarketerService {
         .limit((paginationDto.page - 1) * paginationDto.paging + paginationDto.paging)
         .select('-objection -objection_response -objection_status')
       const count = await this.campaignModel.count({
-        state: 'process', level: marketer.level, end_date: { $gt: new Date() },
+        state: 'process', level: marketer.level, end_date: { $gt: new Date() }, admin_verified: true,
         '$where': 'this.marketers_joined < this.marketer_count'
       })
       return { data: campaigns, count }
@@ -33,7 +33,7 @@ export class CampaignMarketerService {
   getCampaignDetails = async (_id: IdDto, marketer) => {
     try {
       return await this.campaignModel.findOne({
-        _id, state: 'process', level: marketer.level, end_date: { $gt: new Date() },
+        _id, state: 'process', level: marketer.level, end_date: { $gt: new Date() }, admin_verified: true,
         '$where': 'this.marketers_joined < this.marketer_count'
       })
         .select('-objection -objection_response -objection_status')

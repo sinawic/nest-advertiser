@@ -33,11 +33,18 @@ export class CampaignAdminController {
     return this.campaignAdminService.getCampaignDetails(_id)
   }
 
-  @Patch(':_id')
+  @Patch('objection/:_id')
   object(
     @Param('_id') _id: IdDto,
     @Body() { state, approved }: { state: string, approved: boolean }) {
     return this.campaignAdminService.objectCampaign({ state, _id }, approved)
+  }
+
+  @Patch('approve/:_id')
+  approve(
+    @Param('_id') _id: IdDto,
+    @Body() { state }: { state: boolean }) {
+    return this.campaignAdminService.approveCampaign({ state, _id })
   }
 
 }

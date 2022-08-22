@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Campaign } from '../schemas';
-import { IdDto, PaginationDto, StateChangeDto } from '../../common/dto';
+import { IdDto, PaginationDto, StateChangeDto, ToggleDto } from '../../common/dto';
 
 @Injectable()
 export class CampaignAdminService {
@@ -40,6 +40,19 @@ export class CampaignAdminService {
         throw new HttpException({ message: 'this campaign has no objection' }, HttpStatus.BAD_REQUEST)
       campaign.objection_response = stateChangeDto.state
       campaign.objection_status = Boolean(approved)
+      return await campaign.save()
+    } catch (error) {
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+  approveCampaign = async (toggleDto: ToggleDto) => {
+    try {
+      const campaign = await this.campaignModel.findOne({ _id: toggleDto._id })
+      if (!campaign)
+        throw new HttpException({ message: 'campaign not found' }, HttpStatus.BAD_REQUEST)
+
+      campaign.admin_verified = Boolean(toggleDto.state)
       return await campaign.save()
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)

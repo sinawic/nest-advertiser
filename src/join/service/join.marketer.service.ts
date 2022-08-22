@@ -45,7 +45,7 @@ export class JoinMarketerService {
         throw new HttpException({ message: 'You have already joined this campaign' }, HttpStatus.BAD_REQUEST)
 
       // check if campaign is still active
-      const campaign = await this.campaignModel.findOne({ _id: joinDto.campaign, level: marketer.level, end_date: { $gt: new Date() } })
+      const campaign = await this.campaignModel.findOne({ _id: joinDto.campaign, admin_verified: true, level: marketer.level, end_date: { $gt: new Date() } })
       if (!campaign)
         throw new HttpException({ message: 'Campaign not found or not active' }, HttpStatus.BAD_REQUEST)
 

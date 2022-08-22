@@ -17,6 +17,9 @@ export class Campaign {
   @Prop({ default: null }) // true: admin approved, false: admin rejected
   objection_status: boolean;
 
+  @Prop({ default: false })
+  admin_verified: boolean;
+
   @Prop({ default: 'process' }) // process, done, hold
   state: string;
 
