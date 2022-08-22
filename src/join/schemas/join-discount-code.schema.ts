@@ -1,21 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-export type JoinBuyLinkDocument = JoinBuyLink & Document;
+export type JoinDiscountCodeDocument = JoinDiscountCode & Document;
 
 @Schema()
-export class JoinBuyLink {
+export class JoinDiscountCode {
   @Prop({ required: true })
-  postal_code: string;
-
-  @Prop({ required: true })
-  phone: string;
-
-  @Prop({ required: true })
-  address: string;
-
-  @Prop({ default: 0 })
-  count: number;
+  user_unique_id: string;
 
   @Prop({ required: true, ref: 'campaign' })
   campaign: mongoose.Schema.Types.ObjectId;
@@ -24,4 +15,4 @@ export class JoinBuyLink {
   join: mongoose.Schema.Types.ObjectId;
 }
 
-export const JoinBuyLinkSchema = SchemaFactory.createForClass(JoinBuyLink)
+export const JoinDiscountCodeSchema = SchemaFactory.createForClass(JoinDiscountCode)
