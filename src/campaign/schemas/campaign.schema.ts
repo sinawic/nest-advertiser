@@ -1,10 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { CampaignPicDocument } from '.';
 
 export type CampaignDocument = Campaign & Document;
 
 @Schema()
 export class Campaign {
+  @Prop({ required: true })
+  title: string;
+
+  @Prop({ required: true })
+  description: string;
+
+  @Prop({ type: {} })
+  pic: CampaignPicDocument;
+
   @Prop({ required: true })
   type: string;
 

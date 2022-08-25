@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MarketerAuthService } from '../auth/service';
 import { Level, LevelSchema } from '../level/schemas';
 import { Campaign, CampaignSchema } from '../campaign/schemas';
+import { AdminBalance, AdminBalanceSchema } from '../adminBalance/schemas';
 import {
   MarketerCampaignPrice, MarketerCampaignPriceSchema,
   MarketerDiscountPrice, MarketerDiscountPriceSchema
@@ -22,6 +23,7 @@ import {
     JwtModule.register({}),
     MongooseModule.forFeature([
       { name: Join.name, schema: JoinSchema },
+      { name: AdminBalance.name, schema: AdminBalanceSchema },
       { name: JoinBuyLink.name, schema: JoinBuyLinkSchema },
       { name: JoinDiscountCode.name, schema: JoinDiscountCodeSchema },
       { name: Campaign.name, schema: CampaignSchema },

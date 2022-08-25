@@ -9,6 +9,7 @@ import { CampaignPercent } from '../../campaignPercent/schemas';
 import { ObjectionDate } from '../../objectionDate/schemas';
 import { Join } from '../../join/schemas';
 import { addDays, timeDif } from 'src/common/utils';
+import { unlink } from 'fs';
 
 @Injectable()
 export class CampaignAdvertiserService {
@@ -41,7 +42,7 @@ export class CampaignAdvertiserService {
     }
   }
 
-  createCampaign = async (createCampaignDto: CreateCampaignDto, advertiser) => {
+  createCampaign = async (createCampaignDto: CreateCampaignDto, advertiser, pic) => {
     try {
       if (createCampaignDto.type === 'discount_code' &&
         (!createCampaignDto.discount_percent || !createCampaignDto.discount_usable_count)) {
@@ -66,18 +67,24 @@ export class CampaignAdvertiserService {
       if (dif < 1)
         throw new HttpException({ message: 'campaign duration must be at least 1 day' }, HttpStatus.BAD_REQUEST)
 
-      return await new this.campaignModel({
+      const campaign = new this.campaignModel({
         ...createCampaignDto,
         advertiser: advertiser._id,
         final_price: (dif * prices.day_price) + (createCampaignDto.marketer_count * prices.marketer_price) + (createCampaignDto.product_count * prices.product_price),
         date_created: new Date()
-      }).save()
+      })
+
+      if (pic)
+        campaign.pic = pic
+
+      return await campaign.save()
+
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
   }
 
-  editCampaign = async (editCampaignDto: EditCampaignDto, advertiser) => {
+  editCampaign = async (editCampaignDto: EditCampaignDto, advertiser, pic) => {
     try {
       if (await this.joinModel.findOne({ campaign: editCampaignDto._id }))
         throw new HttpException({ message: 'campaign has marketers joined' }, HttpStatus.BAD_REQUEST)
@@ -90,11 +97,18 @@ export class CampaignAdvertiserService {
       if (dif < 1)
         throw new HttpException({ message: 'campaign duration must be at least 1 day' }, HttpStatus.BAD_REQUEST)
 
-      return await this.campaignModel.findOneAndUpdate({ _id: editCampaignDto._id, advertiser: advertiser._id },
+      const campaign = await this.campaignModel.findOneAndUpdate({ _id: editCampaignDto._id, advertiser: advertiser._id },
         {
           ...editCampaignDto,
           final_price: (dif * prices.day_price) + (editCampaignDto.marketer_count * prices.marketer_price) + (editCampaignDto.product_count * prices.product_price)
         }, { new: true })
+
+      if (pic) {
+        unlink(campaign.pic.path, () => { })
+        campaign.pic = pic
+      }
+
+      return await campaign.save()
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }
@@ -135,6 +149,23 @@ export class CampaignAdvertiserService {
       if (await this.joinModel.findOne({ campaign: _id }))
         throw new HttpException({ message: 'campaign has marketers joined' }, HttpStatus.BAD_REQUEST)
       return await this.campaignModel.findOneAndDelete({ _id, advertiser: advertiser._id })
+    } catch (error) {
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
+    }
+  }
+
+
+  deleteCampaignPic = async (_id: IdDto, advertiser) => {
+    try {
+      if (await this.joinModel.findOne({ campaign: _id }))
+        throw new HttpException({ message: 'campaign has marketers joined' }, HttpStatus.BAD_REQUEST)
+      const campaign = await this.campaignModel.findOne({ _id, advertiser: advertiser._id })
+      if (campaign.pic) {
+        unlink(campaign.pic.path, () => { })
+        campaign.pic = null
+        return await campaign.save()
+      }
+      throw new HttpException({ message: 'campaing does not have any pics' }, HttpStatus.BAD_REQUEST)
     } catch (error) {
       throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
     }

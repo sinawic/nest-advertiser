@@ -7,12 +7,14 @@ import { JoinDto } from '../dto';
 import { makeid } from 'src/common/utils';
 import { Campaign } from '../../campaign/schemas';
 import { MarketerCampaignPrice, MarketerDiscountPrice } from '../../marketerCampaignPrice/schemas';
+import { AdminBalance } from 'src/adminBalance/schemas';
 
 @Injectable()
 export class JoinMarketerService {
   constructor(
     @InjectModel(Join.name) private joinModel: Model<any>,
     @InjectModel(Campaign.name) private campaignModel: Model<any>,
+    @InjectModel(AdminBalance.name) private adminBalanceModel: Model<any>,
     @InjectModel(MarketerCampaignPrice.name) private marketerCampaignPriceModel: Model<any>,
     @InjectModel(MarketerDiscountPrice.name) private marketerDiscountPriceModel: Model<any>,
   ) { }
@@ -77,6 +79,9 @@ export class JoinMarketerService {
       // update and reduce marketer balance
       marketer.balance -= campaignPrice.price
       await marketer.save()
+
+      // increase admin balance
+      await this.adminBalanceModel.findOneAndUpdate({}, { $inc: { balance: campaignPrice.price } })
 
       return await new this.joinModel({
         type: campaign.type,
