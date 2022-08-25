@@ -22,6 +22,27 @@ export class CreateCampaignDto {
   @IsNotEmpty()
   description: string;
 
+  // 
+  @IsString()
+  @IsOptional()
+  product_title: string;
+
+  @IsString()
+  @IsOptional()
+  product_description: string;
+
+  @Type(() => Number)
+  @IsString()
+  @IsOptional()
+  product_price: number;
+  // 
+
+  // 
+  @IsString()
+  @IsOptional()
+  link: string;
+  // 
+
   @IsString()
   @IsNotEmpty()
   type: string;

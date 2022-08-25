@@ -6,6 +6,7 @@ export type CampaignDocument = Campaign & Document;
 
 @Schema()
 export class Campaign {
+  // campaign general fields
   @Prop({ required: true })
   title: string;
 
@@ -14,6 +15,26 @@ export class Campaign {
 
   @Prop({ type: {} })
   pic: CampaignPicDocument;
+  // 
+
+  // link fields
+  @Prop({})
+  link: string;
+  // 
+
+  // product fields
+  @Prop({})
+  product_title: string;
+
+  @Prop({})
+  product_description: string;
+
+  @Prop({})
+  product_price: number;
+
+  @Prop({ type: {} })
+  product_pic: CampaignPicDocument;
+  // 
 
   @Prop({ required: true })
   type: string;

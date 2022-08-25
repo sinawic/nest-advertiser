@@ -12,7 +12,7 @@ import {
   Post,
   Put,
   Query,
-  UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -22,7 +22,7 @@ import { CreateAttachmentDto, CreateCampaignDto } from '../dto';
 import { IdDto } from '../../common/dto';
 import { AdvertizerDecorator } from 'src/auth/decorator';
 import { campaignStates, serviceTypes } from '../../common/utils';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 
 const path = require('path')
@@ -46,32 +46,59 @@ export class CampaignAdvertiserController {
   }
 
   @Post()
-  @UseInterceptors(FileInterceptor('pic', {
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'pic', maxCount: 1 },
+    { name: 'product_pic', maxCount: 1 }
+  ], {
     storage: diskStorage({
-      destination: './uploads/campaign',
+      destination: (req, file, cb) => {
+        if (file.fieldname === "pic") {
+          cb(null, './uploads/campaign/pic');
+        } else {
+          cb(null, './uploads/campaign/product_pic');
+        }
+      },
       filename: (req, file, cb) =>
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)),
     })
   }))
-  create(@UploadedFile() pic: CreateAttachmentDto, @Body() createCampaignDto: CreateCampaignDto, @AdvertizerDecorator() advertiser) {
+  create(@UploadedFiles() files: { pic: CreateAttachmentDto, product_pic: CreateAttachmentDto }, @Body() createCampaignDto: CreateCampaignDto, @AdvertizerDecorator() advertiser) {
     if (serviceTypes.indexOf(createCampaignDto.type) === -1)
       throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
-    return this.campaignAdvertiserService.createCampaign(createCampaignDto, advertiser, pic)
+
+    if ((createCampaignDto.type === serviceTypes[0] || createCampaignDto.type === serviceTypes[1]) &&
+      !(createCampaignDto.product_title && createCampaignDto.product_description && createCampaignDto.product_price))
+      throw new HttpException({ message: 'campaign product fields required' }, HttpStatus.BAD_REQUEST)
+
+    if ((createCampaignDto.type === serviceTypes[2] || createCampaignDto.type === serviceTypes[3] || createCampaignDto.type === serviceTypes[4]) &&
+      !createCampaignDto.link)
+      throw new HttpException({ message: 'campaign link field required' }, HttpStatus.BAD_REQUEST)
+
+    return this.campaignAdvertiserService.createCampaign(createCampaignDto, advertiser, files)
   }
 
   @Put(':_id')
-  @UseInterceptors(FileInterceptor('pic', {
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'pic', maxCount: 1 },
+    { name: 'product_pic', maxCount: 1 }
+  ], {
     storage: diskStorage({
-      destination: './uploads/campaign',
+      destination: (req, file, cb) => {
+        if (file.fieldname === "pic") {
+          cb(null, './uploads/campaign/pic');
+        } else {
+          cb(null, './uploads/campaign/product_pic');
+        }
+      },
       filename: (req, file, cb) =>
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)),
     })
   }))
   edit(
-    @UploadedFile() pic: CreateAttachmentDto,
+    @UploadedFiles() files: { pic: CreateAttachmentDto, product_pic: CreateAttachmentDto },
     @Param('_id') _id: IdDto,
     @Body() createCampaignDto: CreateCampaignDto, @AdvertizerDecorator() advertiser) {
-    return this.campaignAdvertiserService.editCampaign({ ...createCampaignDto, _id }, advertiser, pic)
+    return this.campaignAdvertiserService.editCampaign({ ...createCampaignDto, _id }, advertiser, files)
   }
 
   @Patch(':_id')

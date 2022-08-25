@@ -42,7 +42,7 @@ export class CampaignAdvertiserService {
     }
   }
 
-  createCampaign = async (createCampaignDto: CreateCampaignDto, advertiser, pic) => {
+  createCampaign = async (createCampaignDto: CreateCampaignDto, advertiser, files) => {
     try {
       if (createCampaignDto.type === 'discount_code' &&
         (!createCampaignDto.discount_percent || !createCampaignDto.discount_usable_count)) {
@@ -74,8 +74,11 @@ export class CampaignAdvertiserService {
         date_created: new Date()
       })
 
-      if (pic)
-        campaign.pic = pic
+      if (files.pic && files.pic[0])
+        campaign.pic = files.pic[0]
+
+      if (files.product_pic && files.product_pic[0])
+        campaign.product_pic = files.product_pic[0]
 
       return await campaign.save()
 
@@ -84,7 +87,7 @@ export class CampaignAdvertiserService {
     }
   }
 
-  editCampaign = async (editCampaignDto: EditCampaignDto, advertiser, pic) => {
+  editCampaign = async (editCampaignDto: EditCampaignDto, advertiser, files) => {
     try {
       if (await this.joinModel.findOne({ campaign: editCampaignDto._id }))
         throw new HttpException({ message: 'campaign has marketers joined' }, HttpStatus.BAD_REQUEST)
@@ -103,9 +106,14 @@ export class CampaignAdvertiserService {
           final_price: (dif * prices.day_price) + (editCampaignDto.marketer_count * prices.marketer_price) + (editCampaignDto.product_count * prices.product_price)
         }, { new: true })
 
-      if (pic) {
-        unlink(campaign.pic.path, () => { })
-        campaign.pic = pic
+      if (files.pic && files.pic[0]) {
+        campaign.pic && unlink(campaign.pic.path, () => { })
+        campaign.pic = files.pic[0]
+      }
+
+      if (files.product_pic && files.product_pic[0]) {
+        campaign.product_pic && unlink(campaign.product_pic.path, () => { })
+        campaign.product_pic = files.product_pic[0]
       }
 
       return await campaign.save()
