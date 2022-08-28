@@ -22,6 +22,12 @@ export class CreateCampaignPriceDto {
   @IsNotEmpty()
   product_price: number;
 
+  // share link fields only
+  @IsNumber()
+  @IsOptional()
+  link_price: number;
+  // 
+
   @IsString()
   @IsNotEmpty()
   campaign_type: string;

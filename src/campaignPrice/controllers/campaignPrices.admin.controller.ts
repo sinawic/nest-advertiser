@@ -41,6 +41,9 @@ export class CampaignPriceAdminController {
   create(@Body() createCampaignPriceDto: CreateCampaignPriceDto) {
     if (serviceTypes.indexOf(createCampaignPriceDto.campaign_type) === -1)
       throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
+
+    if (createCampaignPriceDto.campaign_type === 'share_link' && !createCampaignPriceDto.link_price)
+      throw new HttpException({ message: 'link_price field required' }, HttpStatus.BAD_REQUEST)
     return this.campaignPriceService.createCampaignPrice(createCampaignPriceDto)
   }
 
@@ -48,6 +51,12 @@ export class CampaignPriceAdminController {
   edit(
     @Param('_id') _id: IdDto,
     @Body() createCampaignPriceDto: CreateCampaignPriceDto) {
+    if (serviceTypes.indexOf(createCampaignPriceDto.campaign_type) === -1)
+      throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
+
+    if (createCampaignPriceDto.campaign_type === 'share_link' && !createCampaignPriceDto.link_price)
+      throw new HttpException({ message: 'link_price field required' }, HttpStatus.BAD_REQUEST)
+
     return this.campaignPriceService.editCampaignPrice({ ...createCampaignPriceDto, _id })
   }
 

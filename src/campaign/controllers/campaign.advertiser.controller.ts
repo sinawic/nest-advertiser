@@ -66,6 +66,9 @@ export class CampaignAdvertiserController {
     if (serviceTypes.indexOf(createCampaignDto.type) === -1)
       throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
 
+    if (createCampaignDto.type === 'share_link' && !createCampaignDto.click_count)
+      throw new HttpException({ message: 'must specify click count' }, HttpStatus.BAD_REQUEST)
+
     if ((createCampaignDto.type === serviceTypes[0] || createCampaignDto.type === serviceTypes[1]) &&
       !(createCampaignDto.product_title && createCampaignDto.product_description && createCampaignDto.product_price))
       throw new HttpException({ message: 'campaign product fields required' }, HttpStatus.BAD_REQUEST)
@@ -98,6 +101,21 @@ export class CampaignAdvertiserController {
     @UploadedFiles() files: { pic: CreateAttachmentDto, product_pic: CreateAttachmentDto },
     @Param('_id') _id: IdDto,
     @Body() createCampaignDto: CreateCampaignDto, @AdvertizerDecorator() advertiser) {
+
+    if (serviceTypes.indexOf(createCampaignDto.type) === -1)
+      throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
+
+    if (createCampaignDto.type === 'share_link' && !createCampaignDto.click_count)
+      throw new HttpException({ message: 'must specify click count' }, HttpStatus.BAD_REQUEST)
+
+    if ((createCampaignDto.type === serviceTypes[0] || createCampaignDto.type === serviceTypes[1]) &&
+      !(createCampaignDto.product_title && createCampaignDto.product_description && createCampaignDto.product_price))
+      throw new HttpException({ message: 'campaign product fields required' }, HttpStatus.BAD_REQUEST)
+
+    if ((createCampaignDto.type === serviceTypes[2] || createCampaignDto.type === serviceTypes[3] || createCampaignDto.type === serviceTypes[4]) &&
+      !createCampaignDto.link)
+      throw new HttpException({ message: 'campaign link field required' }, HttpStatus.BAD_REQUEST)
+
     return this.campaignAdvertiserService.editCampaign({ ...createCampaignDto, _id }, advertiser, files)
   }
 
@@ -126,6 +144,13 @@ export class CampaignAdvertiserController {
   @Delete('pic/:_id')
   deletePic(@Param('_id') _id: IdDto, @AdvertizerDecorator() advertiser) {
     return this.campaignAdvertiserService.deleteCampaignPic(_id, advertiser)
+  }
+
+  @Patch('addclicks/:_id')
+  addClicks(
+    @Param('_id') _id: IdDto,
+    @Body() { amount }: { amount: number }, @AdvertizerDecorator() advertiser) {
+    return this.campaignAdvertiserService.addClicks({ amount, _id }, advertiser)
   }
 
 }

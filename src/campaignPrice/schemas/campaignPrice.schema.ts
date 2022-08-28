@@ -17,6 +17,17 @@ export class CampaignPrice {
   @Prop({ default: new Date() })
   date_created: Date;
 
+  // share link fields only
+  @Prop({ default: 0 })
+  link_price: number;
+
+  @Prop({ default: 0 })
+  link_admin_percent: number;
+
+  @Prop({ default: 0 })
+  link_marketer_percent: number;
+  //
+
   @Prop({ default: 'sms_panel' })
   campaign_type: string;
 

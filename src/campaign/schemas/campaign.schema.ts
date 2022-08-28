@@ -36,6 +36,14 @@ export class Campaign {
   product_pic: CampaignPicDocument;
   // 
 
+  // share link fields
+  @Prop({})
+  click_count: number;
+
+  @Prop({})
+  clicked_count: number;
+  // 
+
   @Prop({ required: true })
   type: string;
 

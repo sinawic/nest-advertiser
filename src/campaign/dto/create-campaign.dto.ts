@@ -1,8 +1,5 @@
 import {
-  IsBoolean,
   IsDate,
-  IsDateString,
-  IsEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -22,7 +19,7 @@ export class CreateCampaignDto {
   @IsNotEmpty()
   description: string;
 
-  // 
+  // product fields
   @IsString()
   @IsOptional()
   product_title: string;
@@ -32,15 +29,20 @@ export class CreateCampaignDto {
   product_description: string;
 
   @Type(() => Number)
-  @IsString()
+  @IsNumber()
   @IsOptional()
   product_price: number;
   // 
 
-  // 
+  // link fields
   @IsString()
   @IsOptional()
   link: string;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  click_count: number;
   // 
 
   @IsString()
@@ -91,13 +93,49 @@ export class CreateCampaignDto {
 export class EditCampaignDto {
   @IsString()
   @IsNotEmpty()
+  title: string;
+
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
+  // product fields
+  @IsString()
+  @IsOptional()
+  product_title: string;
+
+  @IsString()
+  @IsOptional()
+  product_description: string;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  product_price: number;
+  // 
+
+  // link fields
+  @IsString()
+  @IsOptional()
+  link: string;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  click_count: number;
+  // 
+
+  @IsString()
+  @IsNotEmpty()
   type: string;
 
+  @Type(() => Number)
   @IsNumber()
   @IsNotEmpty()
   @Min(1)
   product_count: number;
 
+  @Type(() => Number)
   @IsNumber()
   @IsNotEmpty()
   @Min(1)
@@ -115,11 +153,13 @@ export class EditCampaignDto {
   @MinDate(new Date())
   end_date: Date;
 
+  @Type(() => Number)
   @IsOptional()
   @IsNumber()
   @Min(1)
   discount_usable_count: number;
 
+  @Type(() => Number)
   @IsOptional()
   @IsNumber()
   @Min(1)

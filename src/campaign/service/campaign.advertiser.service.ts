@@ -179,4 +179,19 @@ export class CampaignAdvertiserService {
     }
   }
 
+  addClicks = async ({ amount, _id }, advertiser) => {
+    try {
+      const campaign = await this.campaignModel.findOne({ _id, advertiser: advertiser._id })
+      if (!campaign)
+        throw new HttpException({ message: 'campaign not found' }, HttpStatus.BAD_REQUEST)
+
+      if (campaign.state === 'done')
+        throw new HttpException({ message: 'campaign is already done' }, HttpStatus.BAD_REQUEST)
+      campaign.click_count = (campaign.click_count || 0) + amount
+      return await campaign.save()
+    } catch (error) {
+      throw new HttpException({ message: error.message }, HttpStatus.BAD_REQUEST)
+    }
+  }
+
 }

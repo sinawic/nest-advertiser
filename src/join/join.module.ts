@@ -12,6 +12,7 @@ import { MarketerAuthService } from '../auth/service';
 import { Level, LevelSchema } from '../level/schemas';
 import { Campaign, CampaignSchema } from '../campaign/schemas';
 import { AdminBalance, AdminBalanceSchema } from '../adminBalance/schemas';
+import { Advertiser, AdvertiserSchema } from '../advertiser/schemas';
 import {
   MarketerCampaignPrice, MarketerCampaignPriceSchema,
   MarketerDiscountPrice, MarketerDiscountPriceSchema
@@ -27,6 +28,7 @@ import {
       { name: JoinBuyLink.name, schema: JoinBuyLinkSchema },
       { name: JoinDiscountCode.name, schema: JoinDiscountCodeSchema },
       { name: Campaign.name, schema: CampaignSchema },
+      { name: Advertiser.name, schema: AdvertiserSchema },
       { name: Level.name, schema: LevelSchema },
       { name: Marketer.name, schema: MarketerSchema },
       { name: MarketerCampaignPrice.name, schema: MarketerCampaignPriceSchema },

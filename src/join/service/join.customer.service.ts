@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Join, JoinBuyLink, JoinDiscountCode } from '../schemas';
+import { Advertiser } from '../../advertiser/schemas';
+import { Campaign } from '../../campaign/schemas';
 import { JoinBuyLinkDto, JoinShareLinkDto, JoinDiscountCodeDto } from '../dto';
 
 @Injectable()
@@ -10,6 +12,8 @@ export class JoinCustomerService {
     @InjectModel(Join.name) private joinModel: Model<any>,
     @InjectModel(JoinBuyLink.name) private joinBuyLinkModel: Model<any>,
     @InjectModel(JoinDiscountCode.name) private joinDiscountCodeModel: Model<any>,
+    @InjectModel(Advertiser.name) private advertiserModel: Model<any>,
+    @InjectModel(Campaign.name) private campaignModel: Model<any>,
   ) { }
 
   joinBuyLink = async (joinBuyLinkDto: JoinBuyLinkDto) => {
@@ -20,9 +24,16 @@ export class JoinCustomerService {
         throw new HttpException({ message: 'code invalid' }, HttpStatus.BAD_REQUEST)
 
       if (new Date(join.start_date) < new Date() && new Date() < new Date(join.end_date)) {
+        const campaign = await this.campaignModel.findOne({ _id: join.campaign })
+        if (!campaign)
+          throw new HttpException({ message: 'invalid join and campaign' }, HttpStatus.BAD_REQUEST)
+
         // update join used count
         join.used_count++
         await join.save()
+
+        // update advertizer balance 
+        await this.advertiserModel.findOneAndUpdate({ _id: join.advertiser }, { $inc: { balance: campaign.product_price } })
 
         return await new this.joinBuyLinkModel({
           ...joinBuyLinkDto,

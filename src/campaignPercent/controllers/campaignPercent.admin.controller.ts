@@ -4,6 +4,8 @@ import {
   DefaultValuePipe,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -16,6 +18,7 @@ import { BasicGuard } from '../../auth/Guard';
 import { CampaignPercentService } from '../campaignPercent.service'
 import { CreateCampaignPercentDto } from '../dto';
 import { IdDto } from '../../common/dto';
+import { serviceTypes } from '../../common/utils';
 
 @UseGuards(BasicGuard)
 @Controller('admin/campaignPercent')
@@ -36,6 +39,13 @@ export class CampaignPercentAdminController {
 
   @Post()
   create(@Body() createCampaignPercentDto: CreateCampaignPercentDto) {
+    if (serviceTypes.indexOf(createCampaignPercentDto.campaign_type) === -1)
+      throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
+
+    if (createCampaignPercentDto.campaign_type === 'share_link' &&
+      !(createCampaignPercentDto.link_admin_percent && createCampaignPercentDto.link_marketer_percent))
+      throw new HttpException({ message: 'share link fields required' }, HttpStatus.BAD_REQUEST)
+
     return this.campaignPercentService.createCampaignPercent(createCampaignPercentDto)
   }
 
@@ -43,6 +53,13 @@ export class CampaignPercentAdminController {
   edit(
     @Param('_id') _id: IdDto,
     @Body() createCampaignPercentDto: CreateCampaignPercentDto) {
+    if (serviceTypes.indexOf(createCampaignPercentDto.campaign_type) === -1)
+      throw new HttpException({ message: 'campaign type unsupported' }, HttpStatus.BAD_REQUEST)
+
+    if (createCampaignPercentDto.campaign_type === 'share_link' &&
+      !(createCampaignPercentDto.link_admin_percent && createCampaignPercentDto.link_marketer_percent))
+      throw new HttpException({ message: 'share link fields required' }, HttpStatus.BAD_REQUEST)
+
     return this.campaignPercentService.editCampaignPercent({ ...createCampaignPercentDto, _id })
   }
 
