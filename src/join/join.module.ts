@@ -4,13 +4,18 @@ import { JoinMarketerService, JoinCustomerService, JoinAdvertizerService } from 
 
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { Join, JoinSchema, JoinBuyLink, JoinBuyLinkSchema, JoinDiscountCode, JoinDiscountCodeSchema } from './schemas';
+import {
+  Join, JoinSchema, JoinBuyLink, JoinBuyLinkSchema, JoinDiscountCode, JoinDiscountCodeSchema,
+  JoinShareLink, JoinShareLinkSchema
+} from './schemas';
 import { MarketerJwtStrategy } from '../auth/Strategy';
 import { Marketer, MarketerSchema } from '../marketer/schemas';
 import { JwtModule } from '@nestjs/jwt';
 import { MarketerAuthService } from '../auth/service';
 import { Level, LevelSchema } from '../level/schemas';
 import { Campaign, CampaignSchema } from '../campaign/schemas';
+import { CampaignPrice, CampaignPriceSchema } from '../campaignPrice/schemas';
+import { CampaignPercent, CampaignPercentSchema } from '../campaignPercent/schemas';
 import { AdminBalance, AdminBalanceSchema } from '../adminBalance/schemas';
 import { Advertiser, AdvertiserSchema } from '../advertiser/schemas';
 import {
@@ -26,8 +31,11 @@ import {
       { name: Join.name, schema: JoinSchema },
       { name: AdminBalance.name, schema: AdminBalanceSchema },
       { name: JoinBuyLink.name, schema: JoinBuyLinkSchema },
+      { name: JoinShareLink.name, schema: JoinShareLinkSchema },
       { name: JoinDiscountCode.name, schema: JoinDiscountCodeSchema },
       { name: Campaign.name, schema: CampaignSchema },
+      { name: CampaignPrice.name, schema: CampaignPriceSchema },
+      { name: CampaignPercent.name, schema: CampaignPercentSchema },
       { name: Advertiser.name, schema: AdvertiserSchema },
       { name: Level.name, schema: LevelSchema },
       { name: Marketer.name, schema: MarketerSchema },
